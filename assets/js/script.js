@@ -109,7 +109,12 @@ $(document).ready(function () {
                 conversion: $(`#row-${id}-unit`).val(),
                 id: id
             }
-            configuredData.push(data)
+            if(ingredient !== "" && ingredient !== undefined && ingredient !== null &&
+            amount !== "" && amount !== undefined && amount !== null &&
+            conversion !== "" && conversion !== undefined && conversion !== null){
+                configuredData.push(data)
+            }
+
         })
         console.log(configuredData);
         // allData
