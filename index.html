@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Garden Kitchen Calculators</title>
-
+  <link rel="icon" href="./assets/images/favicon.ico">
   <!-- Latest icon font stylesheet -->
   <link rel="stylesheet" href="https://cdn.uadigital.arizona.edu/lib/ua-brand-icons/v1.1.0/ua-brand-icons.min.css">
   <!-- Compiled and minified UA Bootstrap CSS, icon font not included -->
@@ -36,7 +36,7 @@
                 Unit
               </th>
               <th>
-                
+
               </th>
             </tr>
           </table>
@@ -56,8 +56,8 @@
         <section class="nutrition-facts">
           <header class="nutrition-facts__header">
             <h1 class="nutrition-facts__title">Nutrition Facts</h1>
-            <p><span id="nutrition-facts__serving_size">Serving Size 1/2 cup (about 82g)</span></p>
-            <p><span id="nutrition-facts__serving_per">Serving Per Container 2</span></p>
+            <p>Serving Size <span id="nutrition-facts__serving_size"></span>g</p>
+            <p>Serving Per Recipe <input style="margin-left: 20px; width: 40px;" id="nutrition-facts__serving_per" step="1" value="1" type="number" min="1"></p>
           </header>
           <table class="nutrition-facts__table">
             <thead>

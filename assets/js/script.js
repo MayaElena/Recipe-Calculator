@@ -124,8 +124,8 @@ $(document).ready(function () {
         })
         console.log(configuredData);
         // allData
-
-
+        const servings = parseInt($("#nutrition-facts__serving_per").val());
+        
         const finalCalc = {
             calories: 0,
             total_fat: 0,
@@ -151,38 +151,41 @@ $(document).ready(function () {
             vitamin_k: 0,
             vitamin_d: 0,
             zinc: 0,
+            total_weight: 0
         }
 
 
         configuredData.forEach(datapoint => {
 
-            let totalAmount = datapoint.ingredient.servingSize * datapoint.amount / datapoint.conversion
-            console.log(totalAmount, datapoint.ingredient)
+            let conversionFactor = datapoint.amount *  ( datapoint.conversion / datapoint.ingredient.servingSize)
+            console.log(conversionFactor, datapoint)
             const { calories, cholesterol, dietary_fiber, folic_acid, fructose, iron, magnesium, manganese, niacin, potassium, protein, saturated_fat, sodium, sugars, total_carbohydrates, total_fat, total_folate, vitamin_a, vitamin_b_6, vitamin_b_12, vitamin_c, vitamin_d, vitamin_k, zinc} = datapoint.ingredient.nutrients
-            finalCalc.calories += calories * totalAmount;
-            finalCalc.total_fat += total_fat * totalAmount;
-            finalCalc.saturated_fat += saturated_fat * totalAmount;
-            finalCalc.cholesterol += cholesterol * totalAmount;
-            finalCalc.sodium += sodium * totalAmount;
-            finalCalc.total_carbohydrates += total_carbohydrates * totalAmount;
-            finalCalc.dietary_fiber += dietary_fiber * totalAmount;
-            finalCalc.sugars+= sugars * totalAmount;
-            finalCalc.protein+= protein * totalAmount;
-            finalCalc.potassium+= potassium * totalAmount;
-            finalCalc.folic_acid += folic_acid * totalAmount;
-            finalCalc.fructose += fructose * totalAmount;
-            finalCalc.iron += iron * totalAmount;
-            finalCalc.magnesium += magnesium * totalAmount;
-            finalCalc.manganese += manganese *  totalAmount;
-            finalCalc.niacin += niacin * totalAmount;
-            finalCalc.total_folate += total_folate * totalAmount;
-            finalCalc.vitamin_a += vitamin_a * totalAmount;
-            finalCalc.vitamin_b_6 += vitamin_b_6 * totalAmount;
-            finalCalc.vitamin_b_12 += vitamin_b_12* totalAmount;
-            finalCalc.vitamin_c += vitamin_c* totalAmount;
-            finalCalc.vitamin_d += vitamin_d* totalAmount;
-            finalCalc.vitamin_k += vitamin_k* totalAmount;
-            finalCalc.zinc += zinc * totalAmount;
+            finalCalc.calories += calories * conversionFactor;
+            finalCalc.total_fat += total_fat * conversionFactor;
+            finalCalc.saturated_fat += saturated_fat * conversionFactor;
+            finalCalc.cholesterol += cholesterol * conversionFactor;
+            finalCalc.sodium += sodium * conversionFactor;
+            finalCalc.total_carbohydrates += total_carbohydrates * conversionFactor;
+            finalCalc.dietary_fiber += dietary_fiber * conversionFactor;
+            finalCalc.sugars+= sugars * conversionFactor;
+            finalCalc.protein+= protein * conversionFactor;
+            finalCalc.potassium+= potassium * conversionFactor;
+            finalCalc.folic_acid += folic_acid * conversionFactor;
+            finalCalc.fructose += fructose * conversionFactor;
+            finalCalc.iron += iron * conversionFactor;
+            finalCalc.magnesium += magnesium * conversionFactor;
+            finalCalc.manganese += manganese *  conversionFactor;
+            finalCalc.niacin += niacin * conversionFactor;
+            finalCalc.total_folate += total_folate * conversionFactor;
+            finalCalc.vitamin_a += vitamin_a * conversionFactor;
+            finalCalc.vitamin_b_6 += vitamin_b_6 * conversionFactor;
+            finalCalc.vitamin_b_12 += vitamin_b_12* conversionFactor;
+            finalCalc.vitamin_c += vitamin_c* conversionFactor;
+            finalCalc.vitamin_d += vitamin_d* conversionFactor;
+            finalCalc.vitamin_k += vitamin_k* conversionFactor;
+            finalCalc.zinc += zinc * conversionFactor;
+
+            finalCalc.total_weight += (datapoint.amount * datapoint.conversion)
         })
 
 
@@ -192,11 +195,13 @@ $(document).ready(function () {
 
         // calculateErrors
 
+        for (const key in finalCalc){
+            finalCalc[key] = finalCalc[key] / servings
+        }
 
 
-
-
-        $("#nutrition-facts__calories").text(Number(finalCalc.calories).toFixed(0))
+        $("#nutrition-facts__calories").text(Number(finalCalc.calories ).toFixed(0))
+        $("#nutrition-facts__serving_size").text(Number(finalCalc.total_weight).toFixed(0))
         $("#nutrition-facts__fat_calories").text(Number(finalCalc.total_fat * 9).toFixed(0))
 
 
