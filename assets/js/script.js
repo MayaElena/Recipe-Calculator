@@ -210,6 +210,7 @@ $(document).ready(function () {
         let DVs;
         if (is2000) {
             DVs = {
+                total_calories: 2000,
                 total_fat: 65,
                 saturated_fat: 20,
                 cholesterol: 300,
@@ -236,6 +237,7 @@ $(document).ready(function () {
         }
 
 
+        let totalcaloriesDV = Number(finalCalc.calories) / DVs.total_calories * 100;
         let totalFatDV = Number(finalCalc.total_fat) / DVs.total_fat * 100;
         let satFatDV = Number(finalCalc.saturated_fat) / DVs.saturated_fat * 100;
         let cholDV = Number(finalCalc.cholesterol) / DVs.cholesterol * 100;
@@ -247,13 +249,18 @@ $(document).ready(function () {
 
         $(".dv_warning").empty();
 
+        if (totalcaloriesDV > WARNING_DV_THRESHOLD ) {
+            $("#nutrition-facts__fat_calories").append($(`<span class='dv_warning'>Total Calories are over the recommended daily value!</span>`))
+        }
+
+
         $("#nutrition-facts__total_fat_percent").text(totalFatDV.toFixed(0))
         if (totalFatDV > WARNING_DV_THRESHOLD) {
             $("#nutrition-facts__total_fat_percent").append($(`<span class='dv_warning'>Total Fat is over the recommended daily value!</span>`))
         }
         $("#nutrition-facts__sat_fat_percent").text(satFatDV.toFixed(0))
         if (satFatDV > WARNING_DV_THRESHOLD) {
-            $("#nutrition-facts__sat_fat_percent").append($(`<span class='dv_warning'>Saturated Fat is over the recommended daily value!</span>`))
+            $("#nutrition-facts__sat_fat_percent").prepend($(`<span class='dv_warning'>Saturated Fat is over the recommended daily value!</span>`))
         }
         $("#nutrition-facts__cholesterol_percent").text(cholDV.toFixed(0))
         if (cholDV > WARNING_DV_THRESHOLD) {

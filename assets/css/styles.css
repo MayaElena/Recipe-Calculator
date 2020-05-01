@@ -28,7 +28,8 @@ p {
   margin: 0;
 }
 .dv_warning {
-  width: 420px;
+
+  position: fixed;
   background-color: #ab0520;
   color: #fff;
   text-align: center;
