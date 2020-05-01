@@ -21,8 +21,11 @@
   <!-- <input id='ingredientInput'/> 
   <button id="getData">Get Data</button> -->
   <div class="container">
+    <div id="errors" class="row">
+
+    </div>
     <div class="row">
-      <div class="col-md-7">
+      <div class="col-md-9">
         <div class="table-responsive">
           <table class="table-striped" id="ingredientTable">
             <tr>
@@ -79,7 +82,10 @@
                 </td>
               </tr>
               <tr class="thick-row">
-                <td colspan="3" class="small-info">
+                <th colspan="2">
+
+                </th>
+                <td colspan="3" class="dv small-info justify-content-end">
                   <b>% Daily Value*</b>
                 </td>
               </tr>
@@ -88,7 +94,7 @@
                   <b>Total Fat</b>
                   <span id="nutrition-facts__total_fat"></span>g
                 </th>
-                <td>
+                <td class="dv">
                   <b><span id="nutrition-facts__total_fat_percent"></span>%</b>
                 </td>
               </tr>
@@ -99,7 +105,7 @@
                   Saturated Fat
                   <span id="nutrition-facts__sat_fat"></span>g
                 </th>
-                <td>
+                <td class="dv">
                   <b><span id="nutrition-facts__sat_fat_percent"></span>%</b>
                 </td>
               </tr>
@@ -118,7 +124,7 @@
                   <b>Cholesterol</b>
                   <span id="nutrition-facts__cholesterol"></span>mg
                 </th>
-                <td>
+                <td class="dv">
                   <b> <span id="nutrition-facts__cholesterol_percent"></span>%</b>
                 </td>
               </tr>
@@ -127,7 +133,7 @@
                   <b>Sodium</b>
                   <span id="nutrition-facts__sodium"></span>mg
                 </th>
-                <td>
+                <td class="dv">
                   <b><span id="nutrition-facts__sodium_percent"></span>%</b>
                 </td>
               </tr>
@@ -136,7 +142,7 @@
                   <b>Total Carbohydrate</b>
                   <span id="nutrition-facts__total_carb"></span>g
                 </th>
-                <td>
+                <td class="dv">
                   <b><span id="nutrition-facts__total_carb_percent"></span>%</b>
                 </td>
               </tr>
@@ -147,7 +153,7 @@
                   Dietary Fiber
                   <span id="nutrition-facts__fiber"></span>g
                 </th>
-                <td>
+                <td class="dv">
                   <b><span id="nutrition-facts__fiber_percent"></span>%</b>
                 </td>
               </tr>

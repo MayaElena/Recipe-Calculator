@@ -12,7 +12,9 @@
 }
 
 
-
+/* .dv {
+  text-align: right;
+} */
 .image {
   width: 250px;
   float: left;
@@ -25,7 +27,23 @@ body {
 p {
   margin: 0;
 }
+.dv_warning {
+  width: 420px;
+  background-color: #ab0520;
+  color: #fff;
+  text-align: center;
+  border-radius: 20px;
+  padding: 5px 0;
+  margin-left: 20px;
 
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+}
+
+.warning {
+  background-color: red;
+}
 .nutrition-facts {
   border: 1px solid black;
   margin: 20px;
