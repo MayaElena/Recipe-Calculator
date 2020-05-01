@@ -215,7 +215,23 @@ $(document).ready(function () {
                 cholesterol: 300,
                 sodium: 2400,
                 total_carbohydrates: 300,
-                dietary_fiber: 25
+                dietary_fiber: 25,
+                folic_acid: 400,
+                iron: 18,
+                magnesium: 420,
+                manganese: 2.3,
+                niacin : 16,
+                potassium: 4700, 
+                total_folate: 400,
+                vitamin_a: 900,
+                vitamin_b_6: 2.4,
+                vitamin_b_12 : 1.7,
+                vitamin_c: 90,
+                vitamin_d: 20,
+                vitamin_e: 15,
+                vitamin_k: 120,
+                zinc: 11,
+
             }
         }
 
@@ -420,6 +436,38 @@ $(document).ready(function () {
         }
 
 
+
+
+        let vitaminADV = Number(finalCalc.vitamin_a) / DVs.vitamin_a * 100;
+        let vitamin_b_6DV = Number(finalCalc.vitamin_b_6) / DVs.vitamin_b_6 * 100;
+        let vitamin_b_12DV = Number(finalCalc.vitamin_b_12) / DVs.vitamin_b_12 * 100;
+        let vitamin_cDV = Number(finalCalc.vitamin_c) / DVs.vitamin_c * 100;
+        let vitamin_dDV = Number(finalCalc.vitamin_d) / DVs.vitamin_d * 100;
+        let vitamin_kDV = Number(finalCalc.vitamin_k) / DVs.vitamin_k * 100;
+        $("#nutrition-facts___vitamin_A").text(vitaminADV.toFixed(0))
+        $("#nutrition-facts___vitamin_B_6").text(vitamin_b_6DV.toFixed(0))
+        $("#nutrition-facts___vitamin_B_12").text(vitamin_b_12DV.toFixed(0))
+        $("#nutrition-facts___vitamin_C").text(vitamin_cDV.toFixed(0))
+        $("#nutrition-facts___vitamin_D").text(vitamin_dDV.toFixed(0))
+        $("#nutrition-facts___vitamin_K").text(vitamin_kDV.toFixed(0))
+
+
+        let folic_acidADV = Number(finalCalc.folic_acid) / DVs.folic_acid * 100;
+        let ironDV = Number(finalCalc.iron) / DVs.iron * 100;
+        let magnesiumDV = Number(finalCalc.magnesium) / DVs.magnesium * 100;
+        let manganeseDV = Number(finalCalc.manganese) / DVs.manganese * 100;
+        let niacinDV = Number(finalCalc.niacin) / DVs.niacin * 100;
+        let potassiumDV = Number(finalCalc.potassium) / DVs.potassium * 100;
+        let total_folateDV = Number(finalCalc.total_folate) / DVs.total_folate * 100;
+        let zincDV = Number(finalCalc.zinc) / DVs.zinc * 100;
+        $("#nutrition-facts___folic_acid").text(folic_acidADV.toFixed(0))
+        $("#nutrition-facts___iron").text(ironDV.toFixed(0))
+        $("#nutrition-facts___magnesium").text(magnesiumDV.toFixed(0))
+        $("#nutrition-facts___manganese").text(manganeseDV.toFixed(0))
+        $("#nutrition-facts___niacin").text(niacinDV.toFixed(0))
+        $("#nutrition-facts___potassium").text(potassiumDV.toFixed(0))
+        $("#nutrition-facts___total_folate").text(total_folateDV.toFixed(0))
+        $("#nutrition-facts___zinc").text(zincDV.toFixed(0))
 
     }
 
