@@ -303,7 +303,7 @@ $(document).ready(function () {
                 if (index < 2 && erroredProblems.indexOf(problem.fullname) == -1) {
                     $(`#row-${problem.id}`).after($(`<row class='error'><div class="alert alert-dismissible alert-${totalFatDV > ERROR_DV_THRESHOLD ? 'warning' : 'danger'}">                   
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true"><i class="ua-brand-x"></i></span></button>
-                    <h4>${problem.name} is/are ${totalFatDV > ERROR_DV_THRESHOLD ? 'very' : 'extremely'} high in fat in that amount. Consider a different ingredient or amount of ${problem.name}.</h4>
+                    <h4>${problem.name} is ${totalFatDV > ERROR_DV_THRESHOLD ? 'very' : 'extremely'} high in fat, part of a healthy diet is monitoring our fat! Consider a different ingredient or amount of ${problem.name}.</h4>
  
                   </div></row>`))
                 }
@@ -330,7 +330,7 @@ $(document).ready(function () {
                 if (index < 2 && erroredProblems.indexOf(problem.fullname) == -1) {
                     $(`#row-${problem.id}`).after($(`<row class='error'><div class="alert alert-dismissible alert-${satFatDV > ERROR_DV_THRESHOLD ? 'warning' : 'danger'}">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true"><i class="ua-brand-x"></i></span></button>
-                    <h4>${problem.name} is/are ${satFatDV > ERROR_DV_THRESHOLD ? 'very' : 'extremely'} high in saturated fat in that amount. Consider a different ingredient or amount of ${problem.name}.</h4>
+                    <h4>${problem.name} is/are ${satFatDV > ERROR_DV_THRESHOLD ? 'very' : 'extremely'} high in saturated fat, part of a healthy diet is monitoring our saturated fat!  Consider a different ingredient or amount of ${problem.name}.</h4>
    
                   </div></row>`))
                 }
@@ -357,7 +357,7 @@ $(document).ready(function () {
                 if (index < 2 && erroredProblems.indexOf(problem.fullname) == -1) {
                     $(`#row-${problem.id}`).after($(`<row class='error'><div class="alert alert-dismissible alert-${cholDV > ERROR_DV_THRESHOLD ? 'warning' : 'danger'}">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true"><i class="ua-brand-x"></i></span></button>
-                    <h4>${problem.name} is/are ${cholDV > ERROR_DV_THRESHOLD ? 'very' : 'extremely'} high in cholesterol in that amount. Consider a different ingredient or amount of ${problem.name}.</h4>
+                    <h4>${problem.name} is/are ${cholDV > ERROR_DV_THRESHOLD ? 'very' : 'extremely'} high in cholesterol, part of a healthy diet is monitoring our cholesterol! Consider a different ingredient or amount of ${problem.name}.</h4>
 
                   </div></row>`))
                 }
@@ -384,7 +384,7 @@ $(document).ready(function () {
                 if (index < 2 && erroredProblems.indexOf(problem.fullname) == -1) {
                     $(`#row-${problem.id}`).after($(`<row class='error'><div class="alert alert-dismissible alert-${sodiumDV > ERROR_DV_THRESHOLD ? 'warning' : 'danger'}">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true"><i class="ua-brand-x"></i></span></button>
-                    <h4>${problem.name} is/are ${sodiumDV > ERROR_DV_THRESHOLD ? 'very' : 'extremely'} high in sodium in that amount. Consider a different ingredient or amount of ${problem.name}.</h4>
+                    <h4>${problem.name} is/are ${sodiumDV > ERROR_DV_THRESHOLD ? 'very' : 'extremely'} high in sodium, part of a healthy diet is monitoring our sodium! Consider a different ingredient or amount of ${problem.name}.</h4>
 
                   </div></row>`))
                 }
@@ -411,7 +411,7 @@ $(document).ready(function () {
                 if (index < 2 && erroredProblems.indexOf(problem.fullname) == -1) {
                     $(`#row-${problem.id}`).after($(`<row class='error'><div class="alert alert-dismissible alert-${totalCarbDV > ERROR_DV_THRESHOLD ? 'warning' : 'danger'}">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true"><i class="ua-brand-x"></i></span></button>
-                    <h4>${problem.name} is/are ${totalCarbDV > ERROR_DV_THRESHOLD ? 'very' : 'extremely'} high in carbohydrates in that amount. Consider a different ingredient or amount of ${problem.name}.</h4>
+                    <h4>${problem.name} is/are ${totalCarbDV > ERROR_DV_THRESHOLD ? 'very' : 'extremely'} high in carbohydrates, part of a healthy diet is monitoring our carbohydrates! Consider a different ingredient or amount of ${problem.name}.</h4>
 
                   </div></row>`))
                 }
@@ -438,7 +438,7 @@ $(document).ready(function () {
                 if (index < 2 && erroredProblems.indexOf(problem.fullname) == -1) {
                     $(`#row-${problem.id}`).after($(`<row class='error'><div class="alert alert-dismissible alert-${dietaryFiberDV > ERROR_DV_THRESHOLD ? 'warning' : 'danger'}">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true"><i class="ua-brand-x"></i></span></button>
-                    <h4>${problem.name} is/are ${dietaryFiberDV > ERROR_DV_THRESHOLD ? 'very' : 'extremely'} high in fiber in that amount. Consider a different ingredient or amount of ${problem.name}.</h4>
+                    <h4>${problem.name} is/are ${dietaryFiberDV > ERROR_DV_THRESHOLD ? 'very' : 'extremely'} high in fiber, part of a healthy diet is monitoring our fiber! Consider a different ingredient or amount of ${problem.name}.</h4>
 
                   </div></row>`))
                 }
