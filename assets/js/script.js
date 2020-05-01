@@ -158,6 +158,9 @@ $(document).ready(function () {
         configuredData.forEach(datapoint => {
 
             let conversionFactor = datapoint.amount *  ( datapoint.conversion / datapoint.ingredient.servingSize)
+            if(datapoint.conversion == 100){
+                conversionFactor = conversionFactor / 100;
+            }
             console.log(conversionFactor, datapoint)
             const { calories, cholesterol, dietary_fiber, folic_acid, fructose, iron, magnesium, manganese, niacin, potassium, protein, saturated_fat, sodium, sugars, total_carbohydrates, total_fat, total_folate, vitamin_a, vitamin_b_6, vitamin_b_12, vitamin_c, vitamin_d, vitamin_k, zinc} = datapoint.ingredient.nutrients
             finalCalc.calories += calories * conversionFactor;
@@ -185,7 +188,7 @@ $(document).ready(function () {
             finalCalc.vitamin_k += vitamin_k* conversionFactor;
             finalCalc.zinc += zinc * conversionFactor;
 
-            finalCalc.total_weight += (datapoint.amount * datapoint.conversion)
+            finalCalc.total_weight += (datapoint.ingredient.servingSize * conversionFactor)
         })
 
 
