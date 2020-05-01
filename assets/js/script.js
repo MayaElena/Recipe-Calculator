@@ -97,26 +97,26 @@ $(document).ready(function () {
      */
     async function calcRecipe() {
         const rows = $(".ingredientRow");
-        console.log(rows);
+        //console.log(rows);
         const configuredData = [];
         rows.map((index, row) => {
-            console.log(row)
+            //console.log(row)
             let id = $(row).attr("data-id")
-            console.log(id)
+            //console.log(id)
             let data = {
                 ingredient: ingredients[$(`#row-${id}-ingredient`).val()],
                 amount: $(`#row-${id}-quantity`).val(),
                 conversion: $(`#row-${id}-unit`).val(),
                 id: id
             }
-            if(ingredient !== "" && ingredient !== undefined && ingredient !== null &&
-            amount !== "" && amount !== undefined && amount !== null &&
-            conversion !== "" && conversion !== undefined && conversion !== null){
+            if(data.ingredient !== "" && data.ingredient !== undefined && data.ingredient !== null &&
+            data.amount !== "" && data.amount !== undefined && data.amount !== null &&
+            data.conversion !== "" && data.conversion !== undefined && data.conversion !== null){
                 configuredData.push(data)
             }
 
         })
-        console.log(configuredData);
+        //console.log(configuredData);
         // allData
         const servings = parseInt($("#nutrition-facts__serving_per").val());
 
@@ -155,7 +155,7 @@ $(document).ready(function () {
             if (datapoint.conversion == 100) {
                 conversionFactor = conversionFactor / 100;
             }
-            console.log(conversionFactor, datapoint)
+            //console.log(conversionFactor, datapoint)
             const { calories, cholesterol, dietary_fiber, folic_acid, fructose, iron, magnesium, manganese, niacin, potassium, protein, saturated_fat, sodium, sugars, total_carbohydrates, total_fat, total_folate, vitamin_a, vitamin_b_6, vitamin_b_12, vitamin_c, vitamin_d, vitamin_k, zinc } = datapoint.ingredient.nutrients
             finalCalc.calories += calories * conversionFactor;
             finalCalc.total_fat += total_fat * conversionFactor;
@@ -187,7 +187,7 @@ $(document).ready(function () {
 
 
         finalCalc.calories_from_fat = finalCalc.total_fat * 9
-        console.log(finalCalc)
+        //console.log(finalCalc)
         // for(var i =)
 
         // calculateErrors
@@ -250,7 +250,7 @@ $(document).ready(function () {
         let totalCarbDV = Number(finalCalc.total_carbohydrates) / DVs.total_carbohydrates * 100;
         let dietaryFiberDV = Number(finalCalc.dietary_fiber) / DVs.dietary_fiber * 100;
 
-        console.log(totalFatDV)
+        //console.log(totalFatDV)
 
         $(".dv_warning").empty();
 
@@ -297,7 +297,7 @@ $(document).ready(function () {
                     id: datapoint.id
                 }
             }).sort((a, b) => b.fat - a.fat)
-            console.log(problems)
+            //console.log(problems)
             let erroredProblems = []
             problems.forEach((problem, index) => {
                 if (index < 2 && erroredProblems.indexOf(problem.fullname) == -1) {
@@ -324,7 +324,7 @@ $(document).ready(function () {
                     id: datapoint.id
                 }
             }).sort((a, b) => b.satfat - a.satfat)
-            console.log(problems)
+            //console.log(problems)
             let erroredProblems = []
             problems.forEach((problem, index) => {
                 if (index < 2 && erroredProblems.indexOf(problem.fullname) == -1) {
@@ -351,7 +351,7 @@ $(document).ready(function () {
                     id: datapoint.id
                 }
             }).sort((a, b) => b.chol - a.chol)
-            console.log(problems)
+            //console.log(problems)
             let erroredProblems = []
             problems.forEach((problem, index) => {
                 if (index < 2 && erroredProblems.indexOf(problem.fullname) == -1) {
@@ -378,7 +378,7 @@ $(document).ready(function () {
                     id: datapoint.id
                 }
             }).sort((a, b) => b.sodium - a.sodium)
-            console.log(problems)
+            //console.log(problems)
             let erroredProblems = []
             problems.forEach((problem, index) => {
                 if (index < 2 && erroredProblems.indexOf(problem.fullname) == -1) {
@@ -405,7 +405,7 @@ $(document).ready(function () {
                     id: datapoint.id
                 }
             }).sort((a, b) => b.carbs - a.carbs)
-            console.log(problems)
+            //console.log(problems)
             let erroredProblems = []
             problems.forEach((problem, index) => {
                 if (index < 2 && erroredProblems.indexOf(problem.fullname) == -1) {
@@ -432,7 +432,7 @@ $(document).ready(function () {
                     id: datapoint.id
                 }
             }).sort((a, b) => b.fiber - a.fiber)
-            console.log(problems)
+            //console.log(problems)
             let erroredProblems = []
             problems.forEach((problem, index) => {
                 if (index < 2 && erroredProblems.indexOf(problem.fullname) == -1) {
@@ -644,7 +644,7 @@ $(document).ready(function () {
         }
         else {
             enableAndPopulateRow(rowId, ingredientName)
-            console.log(ingredientName)
+            //console.log(ingredientName)
         }
 
     });
