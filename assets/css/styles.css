@@ -15,6 +15,7 @@
   background-color: darkgray;
 }
 
+
 /* .dv {
   text-align: right;
 } */
@@ -30,6 +31,7 @@ body {
 p {
   margin: 0;
 }
+
 .dv_warning {
 
   position: fixed;
@@ -165,4 +167,57 @@ p {
 }
 .thin-end {
   border-bottom: 1px solid black;
+}
+
+.button-col {
+  display: inline;
+}
+#title{
+  display: inline;
+}
+#ingredientHeader{
+  width: 50%;
+    }
+    #ingredientQuantityHeader{
+      width: 20%;
+    }
+    #ingredientQuantityUnit{
+      width: 20%;
+    }
+    #ingredientDelete{
+      width: 10%;
+    }
+
+@media only screen and (max-width: 600px) {
+  .nutrition-facts {
+    width: 100%;
+    margin: 2px;
+  }
+  .btn-group{
+    text-align: center;
+  }
+  .button-col{
+    margin-left: auto !important;
+  }
+  .panel {
+    text-align: center;
+  }
+  #ingredientTableDiv{
+    width: 100%;
+  }
+  .delete_row{
+    padding: 2px 6px 2px 6px;
+  }
+  #ingredientHeader{
+width: 40%;
+  }
+  #ingredientQuantityHeader{
+    width: 15%;
+  }
+  #ingredientQuantityUnit{
+    width: 35%;
+  }
+  #ingredientDelete{
+    width: 10%;
+  }
 }

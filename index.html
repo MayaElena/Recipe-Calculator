@@ -20,13 +20,15 @@
 
   <!-- <input id='ingredientInput'/> 
   <button id="getData">Get Data</button> -->
-  <div class="container-fluid">
-    <div id="errors" class="row">
+  <div class="container">
 
-    </div>
     <div class="row">
-      <div class="col-md-1"></div>
-      <div class="col-md-8">
+      <div class="col-md-8 d-flex justify-content-center" id="title">
+      <h2>UArizona Garden Kitchen Nutritional Calculator</h2>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12 col-md-6">
         <div style="text-align: center;">
           <span class="loader"></span>
         </div>
@@ -34,59 +36,79 @@
         <div id="ingredientTableDiv" class="table-responsive">
           <table class="table-striped" id="ingredientTable">
             <tr>
-              <th id="ingredientHeader" style="width: 50%;">
-                Ingredient
+              <th id="ingredientHeader" >
+                <h5 id="ingredientHeaderText" class="text-azurite"></h5>
               </th>
-              <th id="ingredientQuantityHeader" style="width: 20%;">
-                Quantity
+              <th id="ingredientQuantityHeader">
+                <h5 id="ingredientQuantityHeaderText" class="text-azurite"></h5>
               </th>
-              <th id="ingredientQuantityUnit" style="width: 30%;" >
-                Unit
+              <th id="ingredientQuantityUnit" >
+                <h5 id="ingredientQuantityUnitText" class="text-azurite"></h5>
               </th>
-              <th>
+              <th id="ingredientDelete" >
 
               </th>
             </tr>
           </table>
         </div>
+        <div class="panel panel-default">
+          <div id="toolsPanelHeading" class="panel-heading"><h3 class="margin-zero-bottom margin-zero-top" id="toolsPanelHeadingText"></h3></div>
+          <div class="panel-body">
+            <div class="row">
+              <h4  id="recipePanelHeading"  style="margin-left:15px;"></h4>
+              <div class="btn-group" role="group" aria-label="Recipe Tools">
+                <div class="col-md-6 button-col mx-auto">
+                  <button class="btn btn-default" id="addRow"></button>
+                </div>
+                <div class="col-md-6 button-col mx-auto">
+                  <button class="btn btn-default" id="calcRecipe"></button>
+                </div>
+              </div>
+            </div>
 
-        <div class="row">
-          <button class="btn btn-default" id="addRow">Add Ingredient to Recipe</button>
-          <button class="btn btn-default" id="calcRecipe">Calculate Recipe</button>
+
+            <div class="row">
+              <h4  id="languagePanelHeading" style="margin-left:15px;"></h4>
+              <div class="btn-group" role="group" aria-label="Language Selector">
+                <div class="col-md-6 button-col mx-auto">
+                  <button class="btn btn-default" id="english">English</button>
+                </div>
+                <div class="col-md-6 button-col mx-auto">
+                  <button class="btn btn-default" id="spanish">Espanol</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
         </div>
-
-        <div class="row">
-          <button class="btn btn-default" id="english">English</button>
-          <button class="btn btn-default" id="spanish">Espanol</button>
-        </div>
-
       </div>
-
 
 
       <div class="col-md-3">
         <section class="nutrition-facts">
           <header class="nutrition-facts__header">
-            <h1 class="nutrition-facts__title">Nutrition Facts</h1>
-            <p>Serving Size <span id="nutrition-facts__serving_size"></span>g</p>
-            <p>Serving Per Recipe <input style="margin-left: 20px; width: 40px;" id="nutrition-facts__serving_per" step="1" value="1" type="number" min="1"></p>
+            <h1 class="nutrition-facts__title"></h1>
+            <p><span id="nutrition-facts__serving_size_text"></span><span id="nutrition-facts__serving_size"></span>g</p>
+            <p><span id="nutrition-facts__serving_per_text"></span> <input style="margin-left: 20px; width: 40px;" id="nutrition-facts__serving_per"
+                step="1" value="1" type="number" min="1"></p>
           </header>
           <table class="nutrition-facts__table">
             <thead>
               <tr>
                 <th colspan="3" class="small-info">
-                  Amount Per Serving
+                  <span id="nutrition-facts__amount_per_text"></span>
                 </th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <th colspan="2">
-                  <b>Calories</b>
+                  <b><span id="nutrition-facts__calories_text" class="text-azurite"></span></b>
                   <span id="nutrition-facts__calories"></span>
                 </th>
                 <td>
-                  Calories from Fat
+                  <span id="nutrition-facts__fat_calories_text" class="text-azurite"></span>
                   <span id="nutrition-facts__fat_calories"></span>
                 </td>
               </tr>
@@ -95,12 +117,12 @@
 
                 </th>
                 <td colspan="3" class="dv small-info justify-content-end">
-                  <b>% Daily Value*</b>
+                  <b><span id="nutrition-facts__daily_value_text"></span></b>
                 </td>
               </tr>
               <tr>
                 <th colspan="2">
-                  <b>Total Fat</b>
+                  <b><span id="nutrition-facts__total_fat_text"></span>:</b>
                   <span id="nutrition-facts__total_fat"></span>g
                 </th>
                 <td class="dv">
@@ -111,7 +133,7 @@
                 <td class="blank-cell">
                 </td>
                 <th>
-                  Saturated Fat
+                  <span id="nutrition-facts__sat_fat_text"></span>:
                   <span id="nutrition-facts__sat_fat"></span>g
                 </th>
                 <td class="dv">
@@ -122,7 +144,7 @@
                 <td class="blank-cell">
                 </td>
                 <th>
-                  Trans Fat
+                  <span id="nutrition-facts__trans_fat_text"></span>:
                   <span id="nutrition-facts__trans_fat">0</span>g
                 </th>
                 <td>
@@ -130,7 +152,7 @@
               </tr>
               <tr>
                 <th colspan="2">
-                  <b>Cholesterol</b>
+                  <b><span id="nutrition-facts__cholesterol_text"></span>:</b>
                   <span id="nutrition-facts__cholesterol"></span>mg
                 </th>
                 <td class="dv">
@@ -139,7 +161,7 @@
               </tr>
               <tr>
                 <th colspan="2">
-                  <b>Sodium</b>
+                  <b><span id="nutrition-facts__sodium_text"></span>:</b>
                   <span id="nutrition-facts__sodium"></span>mg
                 </th>
                 <td class="dv">
@@ -148,7 +170,7 @@
               </tr>
               <tr>
                 <th colspan="2">
-                  <b>Total Carbohydrate</b>
+                  <b><span id="nutrition-facts__total_carb_text"></span>:</b>
                   <span id="nutrition-facts__total_carb"></span>g
                 </th>
                 <td class="dv">
@@ -159,7 +181,7 @@
                 <td class="blank-cell">
                 </td>
                 <th>
-                  Dietary Fiber
+                  <span id="nutrition-facts__fiber_text"></span>:
                   <span id="nutrition-facts__fiber"></span>g
                 </th>
                 <td class="dv">
@@ -170,7 +192,7 @@
                 <td class="blank-cell">
                 </td>
                 <th>
-                  Sugars
+                  <span id="nutrition-facts__sugars_text"></span>:
                   <span id="nutrition-facts__sugars"></span>g
                 </th>
                 <td>
@@ -178,7 +200,7 @@
               </tr>
               <tr class="thick-end">
                 <th colspan="2">
-                  <b>Protein</b>
+                  <span id="nutrition-facts__proteins_text"></span>:
                   <span id="nutrition-facts__proteins"></span>g
                 </th>
                 <td>
@@ -191,71 +213,71 @@
             <tbody>
               <tr>
                 <td colspan="2">
-                  Vitamin A: 
+                  <span id="nutrition-facts___vitamin_A_text"></span>:
                   <span id="nutrition-facts___vitamin_A"></span>%
                 </td>
                 <td>
-                  Vitamin B-6: 
+                  <span id="nutrition-facts___vitamin_B_6_text"></span>:
                   <span id="nutrition-facts___vitamin_B_6"></span>%
                 </td>
               </tr>
               <tr class="thin-end">
                 <td colspan="2">
-                  Vitamin B-12: 
+                  <span id="nutrition-facts___vitamin_B_12_text"></span>:
                   <span id="nutrition-facts___vitamin_B_12"></span>%
                 </td>
                 <td>
-                  Vitamin C: 
+                  <span id="nutrition-facts___vitamin_C_text"></span>:
                   <span id="nutrition-facts___vitamin_C"></span>%
                 </td>
               </tr>
               <tr class="thin-end">
                 <td colspan="2">
-                  Vitamin D: 
+                  <span id="nutrition-facts___vitamin_D_text"></span>:
                   <span id="nutrition-facts___vitamin_D"></span>%
                 </td>
                 <td>
-                  Vitamin K: 
+                  <span id="nutrition-facts___vitamin_K_text"></span>:
                   <span id="nutrition-facts___vitamin_K"></span>%
                 </td>
               </tr>
               <tr class="thin-end">
                 <td colspan="2">
-                  Folic Acid: 
+                  <span id="nutrition-facts___folic_acid_text"></span>:
                   <span id="nutrition-facts___folic_acid"></span>%
                 </td>
                 <td>
-                  Iron: 
+                  <span id="nutrition-facts___iron_text"></span>:
                   <span id="nutrition-facts___iron"></span>%
                 </td>
               </tr>
               <tr class="thin-end">
                 <td colspan="2">
-                  Magnesium: 
+                  <span id="nutrition-facts___magnesium_text"></span>:
                   <span id="nutrition-facts___magnesium"></span>%
                 </td>
                 <td>
-                  Manganese: 
+                  <span id="nutrition-facts___manganese_text"></span>:
                   <span id="nutrition-facts___manganese"></span>%
                 </td>
               </tr>
               <tr class="thin-end">
                 <td colspan="2">
-                  Niacin: 
+                  <span id="nutrition-facts___niacin_text"></span>:
                   <span id="nutrition-facts___niacin"></span>%
                 </td>
                 <td>
-                  Potassium: 
+                  <span id="nutrition-facts___potassium_text"></span>:
                   <span id="nutrition-facts___potassium"></span>%
                 </td>
               </tr>
               <tr class="thin-end">
                 <td colspan="2">
-                  Total Folate: 
+                  <span id="nutrition-facts___total_folate_text"></span>:
                   <span id="nutrition-facts___total_folate"></span>%
                 </td>
                 <td>
-                  Zinc: 
+                  <span id="nutrition-facts___zinc_text"></span>:
                   <span id="nutrition-facts___zinc"></span>%
                 </td>
               </tr>
@@ -335,7 +357,7 @@
     </div>
   </div>
 
- 
+
 
   <!-- End Space for HTML -->
 

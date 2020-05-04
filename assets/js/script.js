@@ -37,18 +37,62 @@ $(document).ready(function () {
 
 
     function showEnglish() {
-        $("#ingredientHeader").text("Ingredient");
-        $("#ingredientQuantityHeader").text("Quantity");
-        $("#ingredientQuantityUnit").text("Unit");
+        $("#ingredientHeaderText").text("Ingredient");
+        $("#ingredientQuantityHeaderText").text("Qty.");
+        $("#ingredientQuantityUnitText").text("Unit");
         $("#addRow").text("Add Ingredient to Recipe");
         $("#calcRecipe").text("Calculate Recipe");
+
+        $("#toolsPanelHeadingText").text("Tools");
+        $("#recipePanelHeading").text("Recipe");
+        $("#languagePanelHeading").text("Language");
+
+        $(".nutrition-facts__title").text("Nutrition Facts");
+        $("#nutrition-facts__serving_size_text").text("Serving Size");
+        $("#nutrition-facts__serving_per_text").text("Servings Per Recipe");
+        $("#nutrition-facts__amount_per_text").text("Amount Per Serving");
+        $("#nutrition-facts__calories_text").text("Calories");
+        $("#nutrition-facts__fat_calories_text").text("Calories from Fat");
+
+
+        $("#nutrition-facts__daily_value_text").text("% Daily Value*");
+        $("#nutrition-facts__total_fat_text").text("Total Fat");
+        $("#nutrition-facts__sat_fat_text").text("Saturated Fat");
+        $("#nutrition-facts__trans_fat_text").text("Trans Fat");
+        $("#nutrition-facts__cholesterol_text").text("Cholesterol");
+        $("#nutrition-facts__sodium_text").text("Sodium");
+
+        $("#nutrition-facts__total_carb_text").text("Total Carbohydrate");
+        $("#nutrition-facts__sugars_text").text("Sugars");
+        $("#nutrition-facts__fiber_text").text("Dietary Fiber");
+        $("#nutrition-facts__proteins_text").text("Proteins");
+
+
+
+        $("#nutrition-facts___vitamin_A_text").text("Vitamin A");
+        $("#nutrition-facts___vitamin_B_6_text").text("Vitamin B 6");
+        $("#nutrition-facts___vitamin_B_12_text").text("Vitamin B 6");
+        $("#nutrition-facts___vitamin_C_text").text("Vitamin C");
+        $("#nutrition-facts___vitamin_D_text").text("Vitamin D");
+        $("#nutrition-facts___vitamin_K_text").text("Vitamin K");
+
+
+        $("#nutrition-facts___folic_acid_text").text("Folic Acid");
+        $("#nutrition-facts___iron_text").text("Iron");
+        $("#nutrition-facts___magnesium_text").text("Magnesium");
+        $("#nutrition-facts___manganese_text").text("Manganese");
+        $("#nutrition-facts___niacin_text").text("Niacin");
+        $("#nutrition-facts___potassium_text").text("Potassium");
+        $("#nutrition-facts___total_folate_text").text("Total Folate");
+        $("#nutrition-facts___zinc_text").text("Zinc");
+
     }
 
 
     function showSpanish() {
-        $("#ingredientHeader").text("Ingrediente");
-        $("#ingredientQuantityHeader").text("Cifra");
-        $("#ingredientQuantityUnit").text("Unidad");
+        $("#ingredientHeaderText").text("Ingrediente");
+        $("#ingredientQuantityHeaderText").text("Cifra");
+        $("#ingredientQuantityUnitText").text("Unidad");
         $("#addRow").text("Agregar Ingrediente a la Receta");
         $("#calcRecipe").text("Calcular Receta");
     }
@@ -60,7 +104,7 @@ $(document).ready(function () {
     $("#spanish").on("click", function (event) {
         showSpanish();
     })
-
+    showEnglish();
     /**
      * Calculate the entire recipe
      */
@@ -270,11 +314,7 @@ $(document).ready(function () {
             let erroredProblems = []
             problems.forEach((problem, index) => {
                 if (index < 2 && erroredProblems.indexOf(problem.fullname) == -1) {
-                    $(`#row-${problem.id}`).after($(`<row class='error'><div class="alert alert-dismissible alert-${totalFatDV > ERROR_DV_THRESHOLD ? 'warning' : 'danger'}">                   
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true"><i class="ua-brand-x"></i></span></button>
-                    <h4>${problem.name} is ${totalFatDV > ERROR_DV_THRESHOLD ? 'very' : 'extremely'} high in fat, part of a healthy diet is monitoring our fat! Consider a different ingredient or amount of ${problem.name}.</h4>
- 
-                  </div></row>`))
+                    $(`#row-${problem.id}`).after(generateNutrientWarningMessage(problem.name, "total fat", totalFatDV, ERROR_DV_THRESHOLD))
                 }
                 erroredProblems.push(problem.fullname)
             })
@@ -297,11 +337,7 @@ $(document).ready(function () {
             let erroredProblems = []
             problems.forEach((problem, index) => {
                 if (index < 2 && erroredProblems.indexOf(problem.fullname) == -1) {
-                    $(`#row-${problem.id}`).after($(`<row class='error'><div class="alert alert-dismissible alert-${satFatDV > ERROR_DV_THRESHOLD ? 'warning' : 'danger'}">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true"><i class="ua-brand-x"></i></span></button>
-                    <h4>${problem.name} is/are ${satFatDV > ERROR_DV_THRESHOLD ? 'very' : 'extremely'} high in saturated fat, part of a healthy diet is monitoring our saturated fat!  Consider a different ingredient or amount of ${problem.name}.</h4>
-   
-                  </div></row>`))
+                    $(`#row-${problem.id}`).after(generateNutrientWarningMessage(problem.name, "saturated fat", satFatDV, ERROR_DV_THRESHOLD))
                 }
                 erroredProblems.push(problem.fullname)
             })
@@ -324,11 +360,7 @@ $(document).ready(function () {
             let erroredProblems = []
             problems.forEach((problem, index) => {
                 if (index < 2 && erroredProblems.indexOf(problem.fullname) == -1) {
-                    $(`#row-${problem.id}`).after($(`<row class='error'><div class="alert alert-dismissible alert-${cholDV > ERROR_DV_THRESHOLD ? 'warning' : 'danger'}">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true"><i class="ua-brand-x"></i></span></button>
-                    <h4>${problem.name} is/are ${cholDV > ERROR_DV_THRESHOLD ? 'very' : 'extremely'} high in cholesterol, part of a healthy diet is monitoring our cholesterol! Consider a different ingredient or amount of ${problem.name}.</h4>
-
-                  </div></row>`))
+                    $(`#row-${problem.id}`).after(generateNutrientWarningMessage(problem.name, "cholesterol", cholDV, ERROR_DV_THRESHOLD))
                 }
                 erroredProblems.push(problem.fullname)
             })
@@ -351,11 +383,7 @@ $(document).ready(function () {
             let erroredProblems = []
             problems.forEach((problem, index) => {
                 if (index < 2 && erroredProblems.indexOf(problem.fullname) == -1) {
-                    $(`#row-${problem.id}`).after($(`<row class='error'><div class="alert alert-dismissible alert-${sodiumDV > ERROR_DV_THRESHOLD ? 'warning' : 'danger'}">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true"><i class="ua-brand-x"></i></span></button>
-                    <h4>${problem.name} is/are ${sodiumDV > ERROR_DV_THRESHOLD ? 'very' : 'extremely'} high in sodium, part of a healthy diet is monitoring our sodium! Consider a different ingredient or amount of ${problem.name}.</h4>
-
-                  </div></row>`))
+                    $(`#row-${problem.id}`).after(generateNutrientWarningMessage(problem.name, "sodium", sodiumDV, ERROR_DV_THRESHOLD))
                 }
                 erroredProblems.push(problem.fullname)
             })
@@ -378,11 +406,7 @@ $(document).ready(function () {
             let erroredProblems = []
             problems.forEach((problem, index) => {
                 if (index < 2 && erroredProblems.indexOf(problem.fullname) == -1) {
-                    $(`#row-${problem.id}`).after($(`<row class='error'><div class="alert alert-dismissible alert-${totalCarbDV > ERROR_DV_THRESHOLD ? 'warning' : 'danger'}">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true"><i class="ua-brand-x"></i></span></button>
-                    <h4>${problem.name} is/are ${totalCarbDV > ERROR_DV_THRESHOLD ? 'very' : 'extremely'} high in carbohydrates, part of a healthy diet is monitoring our carbohydrates! Consider a different ingredient or amount of ${problem.name}.</h4>
-
-                  </div></row>`))
+                    $(`#row-${problem.id}`).after(generateNutrientWarningMessage(problem.name, "carbohydrates", totalCarbDV, ERROR_DV_THRESHOLD))
                 }
                 erroredProblems.push(problem.fullname)
             })
@@ -405,11 +429,7 @@ $(document).ready(function () {
             let erroredProblems = []
             problems.forEach((problem, index) => {
                 if (index < 2 && erroredProblems.indexOf(problem.fullname) == -1) {
-                    $(`#row-${problem.id}`).after($(`<row class='error'><div class="alert alert-dismissible alert-${dietaryFiberDV > ERROR_DV_THRESHOLD ? 'warning' : 'danger'}">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true"><i class="ua-brand-x"></i></span></button>
-                    <h4>${problem.name} is/are ${dietaryFiberDV > ERROR_DV_THRESHOLD ? 'very' : 'extremely'} high in fiber, part of a healthy diet is monitoring our fiber! Consider a different ingredient or amount of ${problem.name}.</h4>
-
-                  </div></row>`))
+                  $(`#row-${problem.id}`).after(generateNutrientWarningMessage(problem.name, "fiber", dietaryFiberDV,ERROR_DV_THRESHOLD))
                 }
                 erroredProblems.push(problem.fullname)
             })
@@ -468,6 +488,13 @@ $(document).ready(function () {
 
     }
 
+    function generateNutrientWarningMessage(problem, valueName, value, valueThreshold){
+        return $(`<tr class='error'><td colspan="3" class="alert alert-dismissible alert-${value > valueThreshold ? 'warning' : 'danger'}">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true"><i class="ua-brand-x"></i></span></button>
+                    <h4><span class="text-capitalize">${problem}</span> is/are ${value > valueThreshold ? 'very' : 'extremely'} high in ${valueName}, part of a healthy diet is monitoring our ${valueName}! Consider a different ingredient or amount of <span class="text-capitalize">${problem}</span>.</h4>
+
+                  </td></tr>`)
+    }
 
     function showLoader() {
         $(".loader").css("display", "block")
@@ -591,7 +618,7 @@ $(document).ready(function () {
                 }
             }
             let hardFind = getIngredientKeys().find(element => element.includes(ingredientName))
-            if (hardFind !== undefined) {
+            if (hardFind !== undefined && !useFuzzy) {
                 useHard = confirm(`Did you mean '${hardFind}'?`)
                 if (useHard) {
                     $(this).val(hardFind)
