@@ -5,92 +5,61 @@ $(document).ready(function () {
     let fuzzy;
     let count = 0;
     const ingredients = {};
-    $.ajax({
-        method: "GET",
-        url: "https://agile-shore-16925.herokuapp.com/api/ingredients"
-    }).then(ingredientsData => {
-        ingredientsData.forEach(ingredient => {
-            ingredients[ingredient.fullname] = ingredient
+
+    const BASE_URL = "https://agile-shore-16925.herokuapp.com/"
+
+    function loadIngredients(cb) {
+        showLoader()
+        $.ajax({
+            method: "GET",
+            url: BASE_URL + "api/ingredients"
+        }).then(ingredientsData => {
+            ingredientsData.forEach(ingredient => {
+                ingredients[ingredient.fullname] = ingredient
+            })
+            console.log(ingredients)
+            fuzzy = FuzzySet(getIngredientKeys(), true, 1, 2);
+
+            cb();
         })
-        console.log(ingredients)
-        fuzzy = FuzzySet(getIngredientKeys(), true, 1, 4);
-        addRow();
-    })
-    // Standard of nutrients is 100g
-    // const ingredients = {
-    //     "tomatoes": {
-    //         fullname: "Raw Tomatoes, Sliced",
-    //         nutrients: {
-    //             calories: 22.14,
-    //             total_fat: .25,
-    //             saturated_fat: .03,
-    //             cholesterol: 0,
-    //             sodium: 6.15,
-    //             total_carbohydrates: 4.78,
-    //             dietary_fiber: 1.48,
-    //             sugars: 3.23,
-    //             protein: 1.08,
-    //             potassium: 291.51
-    //         },
-    //         servingSize: 123,
-    //         measures: [
-    //             {
-    //                 unit: 'Tomato(es)',
-    //                 conversion: 123
-    //             },
-    //             {
-    //                 unit: "Cups, Chopped or Sliced",
-    //                 conversion: 180
-    //             },
-    //             {
-    //                 unit: "grams",
-    //                 conversion: 1
-    //             }, 
-    //             {
-    //                 unit: "oz",
-    //                 conversion: 28.3495
-    //             }]
-    //     },
-    //     "sweet onion": {
-    //         fullname: "Sweet Onion",
-    //         nutrients: {
-    //             calories: 105.92,
-    //             total_fat: .26,
-    //             saturated_fat: .00,
-    //             cholesterol: 0,
-    //             sodium: 26.48,
-    //             total_carbohydrates: 24.99,
-    //             dietary_fiber: 2.98,
-    //             sugars: 16.62,
-    //             protein: 2.65,
-    //             potassium: 393.89
-    //         },
-    //         servingSize: 331,
-    //         measures: [
-    //             {
-    //                 unit: 'Onion(s)',
-    //                 conversion: 331
-    //             },
-    //             {
-    //                 unit: "Cups, Chopped or Sliced",
-    //                 conversion: 180
-    //             },
-    //             {
-    //                 unit: "grams",
-    //                 conversion: 1
-    //             }, 
-    //             {
-    //                 unit: "oz",
-    //                 conversion: 28.3495
-    //             }]
-    //     },
-    // }
+    }
+
+
+    loadIngredients(initialLoad);
 
 
     // API KEY
     var API_KEY = 'OvxhffEpFz6pKGUuHIfZW9MW8ZxJ2QcSmCtP1j1V';
 
     // BOILERPLATE
+
+
+
+
+    function showEnglish() {
+        $("#ingredientHeader").text("Ingredient");
+        $("#ingredientQuantityHeader").text("Quantity");
+        $("#ingredientQuantityUnit").text("Unit");
+        $("#addRow").text("Add Ingredient to Recipe");
+        $("#calcRecipe").text("Calculate Recipe");
+    }
+
+
+    function showSpanish() {
+        $("#ingredientHeader").text("Ingrediente");
+        $("#ingredientQuantityHeader").text("Cifra");
+        $("#ingredientQuantityUnit").text("Unidad");
+        $("#addRow").text("Agregar Ingrediente a la Receta");
+        $("#calcRecipe").text("Calcular Receta");
+    }
+    
+    $("#english").on("click", function (event) {
+        showEnglish();
+    })
+
+    $("#spanish").on("click", function (event) {
+        showSpanish();
+    })
 
     /**
      * Calculate the entire recipe
@@ -109,9 +78,9 @@ $(document).ready(function () {
                 conversion: $(`#row-${id}-unit`).val(),
                 id: id
             }
-            if(data.ingredient !== "" && data.ingredient !== undefined && data.ingredient !== null &&
-            data.amount !== "" && data.amount !== undefined && data.amount !== null &&
-            data.conversion !== "" && data.conversion !== undefined && data.conversion !== null){
+            if (data.ingredient !== "" && data.ingredient !== undefined && data.ingredient !== null &&
+                data.amount !== "" && data.amount !== undefined && data.amount !== null &&
+                data.conversion !== "" && data.conversion !== undefined && data.conversion !== null) {
                 configuredData.push(data)
             }
 
@@ -226,12 +195,12 @@ $(document).ready(function () {
                 iron: 18,
                 magnesium: 420,
                 manganese: 2.3,
-                niacin : 16,
-                potassium: 4700, 
+                niacin: 16,
+                potassium: 4700,
                 total_folate: 400,
                 vitamin_a: 900,
                 vitamin_b_6: 2.4,
-                vitamin_b_12 : 1.7,
+                vitamin_b_12: 1.7,
                 vitamin_c: 90,
                 vitamin_d: 20,
                 vitamin_e: 15,
@@ -254,7 +223,7 @@ $(document).ready(function () {
 
         $(".dv_warning").empty();
 
-        if (totalcaloriesDV > WARNING_DV_THRESHOLD ) {
+        if (totalcaloriesDV > WARNING_DV_THRESHOLD) {
             $("#nutrition-facts__fat_calories").append($(`<span class='dv_warning'>Total Calories are over the recommended daily value!</span>`))
         }
 
@@ -499,33 +468,22 @@ $(document).ready(function () {
 
     }
 
-    // function CalcIngredients() {
-    //     const rows = document.querySelectorAll(".ingredientRow")
-    //     const ingredients = [];
-    //     for (var i = 0; i < rows.length; i++) {
-    //         const row = rows[i];
-    //         const ingredient = row.querySelector(".ingredient").value;
-    //         const quantity = row.querySelector(".quantity").value;
-    //         const unit = row.querySelector(".unit").value;
-    //         const fancy = {
-    //             ingredient: ingredient,
-    //             quantity: quantity,
-    //             unit: unit
-    //         }
-    //         ingredients.push(fancy)
-    //     }
 
-    //     // console.log(ingredients)
-    //     return ingredients;
-    // }
+    function showLoader() {
+        $(".loader").css("display", "block")
+    }
+
+    function hideLoader() {
+        $(".loader").css("display", "none");
+    }
 
     function addRow() {
         count++;
         const ingredientTable = $("#ingredientTable");
         const newRow = $(`  <tr class="ingredientRow" id="row-${count}" data-id="${count}">
         <td>
-          <input type="text" list="ingredients" name="ingredient_name" class="ingredient_name form-control" id="row-${count}-ingredient" data-id="${count}"/>
-          <datalist id="ingredients">
+          <input type="text" list="ingredients-list" name="ingredient_name" class="ingredient_name form-control" id="row-${count}-ingredient" data-id="${count}"/>
+          <datalist class="ingredients-list">
             ${getIngredientKeys().sort().map((value, key) => {
             return `<option value="${value}">${value}</option>`
         })}
@@ -543,23 +501,6 @@ $(document).ready(function () {
         ingredientTable.append(newRow)
 
     }
-
-    // async function getIngredientData(ingredient) {
-    //     const res = await $.ajax({
-    //         method: "GET",
-    //         url: "https://api.nal.usda.gov/fdc/v1/foods/search?api_key=" + API_KEY + "&query=" + ingredient + "&dataType=Foundation,SR Legacy"
-    //     })
-
-    //     const detail = await $.ajax({
-    //         method: "GET",
-    //         url: `https://api.nal.usda.gov/fdc/v1/food/${res.foods[0].fdcId}?api_key=${API_KEY}`
-    //     })
-    //     console.log(res)
-    //     console.log(detail)
-    //     // console.log(res)
-    //     return res;
-    // }
-
 
 
     async function processNutritionalData(recipe) {
@@ -585,6 +526,11 @@ $(document).ready(function () {
         })
     }
 
+    function initialLoad() {
+        addRow();
+        hideLoader()
+    }
+
 
 
     function getIngredientKeys() {
@@ -596,7 +542,12 @@ $(document).ready(function () {
     }
 
 
-
+    function generateIngredientLists() {
+        $("#ingredients-list").empty();
+        getIngredientKeys().sort().map((value, key) => {
+            $('#ingredients-list').append($(`<option value="${value}">${value}</option>`));
+        })
+    }
 
 
 
@@ -612,41 +563,81 @@ $(document).ready(function () {
 
 
     $(document).on("change", ".ingredient_name", function (event) {
+        showLoader();
         const row = $(this)
         const rowId = row.attr("data-id");
         const ingredientName = $(this).val()
         if (ingredientName === "") {
             clearAndDisableRow(rowId)
             let ingredientInput = document.getElementById(`row-${rowId}-ingredient`)
-            ingredientInput.setCustomValidity("No Ingredient Inputted")
-            alert(`Row ${rowId}: No Ingredient Selected`)
+            alert(`Row ${rowId}: No Ingredient Inputted, Please Enter an Ingredient`)
+            hideLoader()
+        }
+        else if (getIngredientKeys().find(element => element === ingredientName)) {
+            enableAndPopulateRow(rowId, ingredientName)
+            hideLoader()
         }
         else if (ingredients[ingredientName] === null || ingredients[ingredientName] === undefined) {
+            let useFuzzy = false;
+            let useHard = false;
             const found = fuzzy.get(ingredientName);
             if (found && found.length > 0) {
                 const newFind = found[0][1];
-                $(this).val(newFind)
-                enableAndPopulateRow(rowId, newFind)
+                useFuzzy = confirm(`Did you mean '${newFind}'?`)
+                if (useFuzzy) {
+                    $(this).val(newFind)
+                    enableAndPopulateRow(rowId, newFind)
+                    hideLoader()
+                }
             }
-            else {
-                const hardFind = getIngredientKeys().find(element => element.includes(ingredientName))
-                if (hardFind) {
+            let hardFind = getIngredientKeys().find(element => element.includes(ingredientName))
+            if (hardFind !== undefined) {
+                useHard = confirm(`Did you mean '${hardFind}'?`)
+                if (useHard) {
                     $(this).val(hardFind)
                     enableAndPopulateRow(rowId, hardFind)
+                    hideLoader()
                 }
-                else {
-                    clearAndDisableRow(rowId)
-                    alert(`Row ${rowId}: Invalid Ingredient Selected`)
-                }
-
             }
+            if (!useFuzzy && !useHard) {
+                $.ajax({
+                    method: "POST",
+                    url: BASE_URL + "api/generateFood",
+                    data: {
+                        query: `1 ${ingredientName}`
+                    },
+                    timeout: 5000
+                }).then((foods) => {
+                    if (foods[0] && foods[0].fullname) {
+                        const useGenerated = confirm(`Did you mean '${foods[0].fullname}'?`)
+                        loadIngredients(generateIngredientLists)
+                        let id = rowId
+                        let foundFood = foods[0].fullname;
+                        if (useGenerated) {
+                            setTimeout(function () {
+                                row.val(foundFood)
+                                enableAndPopulateRow(id, foundFood)
+                                hideLoader()
+                            }, 2000);
+                        }
+                    }
+                    else {
+                        clearAndDisableRow(rowId)
+                        alert(`Row ${rowId}: Sorry, we couldn't find nutritional information for ${ingredientName}`)
+                        hideLoader()
+                    }
+                    console.log(foods)
 
+                }).fail(err => {
+                    clearAndDisableRow(rowId)
+                    alert(`Row ${rowId}: Sorry, we couldn't find nutritional information for ${ingredientName}`)
+                })
+            }
         }
         else {
-            enableAndPopulateRow(rowId, ingredientName)
+            alert(`Row ${rowId}: An Unspecified Error Occurred! Sorry!`)
             //console.log(ingredientName)
         }
-
     });
 
 
@@ -664,6 +655,8 @@ $(document).ready(function () {
     $("#addRow").on("click", event => {
         addRow();
     })
+
+
 
 
 

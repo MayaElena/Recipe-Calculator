@@ -11,6 +11,9 @@
     background-color: red;
 }
 
+.form-control[disabled]{
+  background-color: darkgray;
+}
 
 /* .dv {
   text-align: right;
@@ -40,6 +43,24 @@ p {
   /* Position the tooltip */
   position: absolute;
   z-index: 1;
+}
+
+.loader {
+  position: fixed;
+  border: 40px solid #f3f3f3; /* Light grey */
+  border-top: 40px solid #8b0015;
+  display: inline-block;
+  border-radius: 50%;
+  width: 300px;
+  height: 300px;
+  animation: spin .5s linear infinite;
+  z-index: 1;
+  display: none;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 .warning {

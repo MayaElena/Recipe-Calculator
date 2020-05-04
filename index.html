@@ -27,16 +27,20 @@
     <div class="row">
       <div class="col-md-1"></div>
       <div class="col-md-8">
-        <div class="table-responsive">
+        <div style="text-align: center;">
+          <span class="loader"></span>
+        </div>
+
+        <div id="ingredientTableDiv" class="table-responsive">
           <table class="table-striped" id="ingredientTable">
             <tr>
-              <th style="width: 50%;">
+              <th id="ingredientHeader" style="width: 50%;">
                 Ingredient
               </th>
-              <th style="width: 20%;">
+              <th id="ingredientQuantityHeader" style="width: 20%;">
                 Quantity
               </th>
-              <th style="width: 30%;" >
+              <th id="ingredientQuantityUnit" style="width: 30%;" >
                 Unit
               </th>
               <th>
@@ -51,6 +55,10 @@
           <button class="btn btn-default" id="calcRecipe">Calculate Recipe</button>
         </div>
 
+        <div class="row">
+          <button class="btn btn-default" id="english">English</button>
+          <button class="btn btn-default" id="spanish">Espanol</button>
+        </div>
 
       </div>
 
