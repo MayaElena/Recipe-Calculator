@@ -86,6 +86,12 @@ $(document).ready(function () {
         $("#nutrition-facts___total_folate_text").text("Total Folate");
         $("#nutrition-facts___zinc_text").text("Zinc");
 
+
+        $("#dv-disclaimer").text(`* Percent Daily Values are based on a 2,000 calorie diet. Your daily values may be
+        higher or lower depending on your calorie needs:`);
+        $("#recipePanelHeading").text("Recipe");
+        $("#languagePanelHeading").text("Language");
+
     }
 
 
@@ -600,14 +606,14 @@ $(document).ready(function () {
             alert(`Row ${rowId}: No Ingredient Inputted, Please Enter an Ingredient`)
             hideLoader()
         }
-        else if (getIngredientKeys().find(element => element === ingredientName)) {
+        else if (getIngredientKeys().find(element => element.toLowerCase() === ingredientName.toLowerCase())) {
             enableAndPopulateRow(rowId, ingredientName)
             hideLoader()
         }
         else if (ingredients[ingredientName] === null || ingredients[ingredientName] === undefined) {
             let useFuzzy = false;
             let useHard = false;
-            const found = fuzzy.get(ingredientName);
+            const found = fuzzy.get(ingredientName.toLowerCase());
             if (found && found.length > 0) {
                 const newFind = found[0][1];
                 useFuzzy = confirm(`Did you mean '${newFind}'?`)
@@ -617,7 +623,7 @@ $(document).ready(function () {
                     hideLoader()
                 }
             }
-            let hardFind = getIngredientKeys().find(element => element.includes(ingredientName))
+            let hardFind = getIngredientKeys().find(element => element.includes(ingredientName.toLowerCase()))
             if (hardFind !== undefined && !useFuzzy) {
                 useHard = confirm(`Did you mean '${hardFind}'?`)
                 if (useHard) {
@@ -650,14 +656,14 @@ $(document).ready(function () {
                     }
                     else {
                         clearAndDisableRow(rowId)
-                        alert(`Row ${rowId}: Sorry, we couldn't find nutritional information for ${ingredientName}`)
+                        alert(`Row ${rowId}: Sorry, we couldn't find nutritional information for '${ingredientName}'`)
                         hideLoader()
                     }
                     console.log(foods)
 
                 }).fail(err => {
                     clearAndDisableRow(rowId)
-                    alert(`Row ${rowId}: Sorry, we couldn't find nutritional information for ${ingredientName}`)
+                    alert(`Row ${rowId}: Sorry, we couldn't find nutritional information for '${ingredientName}'`)
                 })
             }
         }
