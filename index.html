@@ -24,7 +24,7 @@
 
     <div class="row">
       <div class="col-md-8 d-flex justify-content-center" id="title">
-      <h2>UArizona Garden Kitchen Nutritional Calculator</h2>
+      <h1 id="titleText"></h1>
     </div>
 
     <div class="row">
@@ -89,7 +89,7 @@
         <section class="nutrition-facts">
           <header class="nutrition-facts__header">
             <h1 class="nutrition-facts__title"></h1>
-            <p><span id="nutrition-facts__serving_size_text"></span><span id="nutrition-facts__serving_size"></span>g</p>
+            <p><span id="nutrition-facts__serving_size_text"></span><span id="nutrition-facts__serving_size"></span> g</p>
             <p><span id="nutrition-facts__serving_per_text"></span> <input style="margin-left: 20px; width: 40px;" id="nutrition-facts__serving_per"
                 step="1" value="1" type="number" min="1"></p>
           </header>
@@ -290,45 +290,45 @@
             <thead>
               <tr>
                 <td colspan="2"></td>
-                <th>Calories:</th>
+                <th><span id="nutrition-facts___calories_text"></span>:</th>
                 <th>2,000</th>
                 <th>2,500</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <th colspan="2">Total Fat</th>
-                <td>Less than</td>
+                <th colspan="2"><span id="nutrition-facts___total_fat_text"></span></th>
+                <td><span id="nutrition-facts___less_than"></span></td>
                 <td>65g</td>
                 <td>80g</td>
               </tr>
               <tr>
                 <td class="blank-cell"></td>
-                <th>Saturated Fat</th>
-                <td>Less than</td>
+                <th><span id="nutrition-facts___sat_fat_text"></span></th>
+                <td><span id="nutrition-facts___less_than"></span></td>
                 <td>20g</td>
                 <td>25g</td>
               </tr>
               <tr>
-                <th colspan="2">Cholesterol</th>
-                <td>Less than</td>
+                <th colspan="2"><span id="nutrition-facts___chol_text"></span></th>
+                <td><span id="nutrition-facts___less_than"></span></td>
                 <td>300mg</td>
                 <td>300 mg</td>
               </tr>
               <tr>
-                <th colspan="2">Sodium</th>
-                <td>Less than</td>
+                <th colspan="2"><span id="nutrition-facts___sodium_text"></span></th>
+                <td><span id="nutrition-facts___less_than"></span></td>
                 <td>2,400mg</td>
                 <td>2,400mg</td>
               </tr>
               <tr>
-                <th colspan="3">Total Carbohydrate</th>
+                <th colspan="3"><span id="nutrition-facts___carbs_text"></span></th>
                 <td>300g</td>
                 <td>375g</td>
               </tr>
               <tr>
                 <td class="blank-cell"></td>
-                <th colspan="2">Dietary Fiber</th>
+                <th colspan="2"><span id="nutrition-facts___fiber_text"></span></th>
                 <td>25g</td>
                 <td>30g</td>
               </tr>
@@ -336,14 +336,10 @@
           </table>
 
           <p class="small-info">
-            Calories per gram:
+            <span id="calories-per-gram-label"></span>
           </p>
           <p class="small-info text-center">
-            Fat 9
-            &bull;
-            Carbohydrate 4
-            &bull;
-            Protein 4
+            <span id="calories-per-gram-label-text"></span>
           </p>
 
         </section>

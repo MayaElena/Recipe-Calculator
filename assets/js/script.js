@@ -35,82 +35,177 @@ $(document).ready(function () {
 
 
 
-
-    function showEnglish() {
-        $("#ingredientHeaderText").text("Ingredient");
-        $("#ingredientQuantityHeaderText").text("Qty.");
-        $("#ingredientQuantityUnitText").text("Unit");
-        $("#addRow").text("Add Ingredient to Recipe");
-        $("#calcRecipe").text("Calculate Recipe");
-
-        $("#toolsPanelHeadingText").text("Tools");
-        $("#recipePanelHeading").text("Recipe");
-        $("#languagePanelHeading").text("Language");
-
-        $(".nutrition-facts__title").text("Nutrition Facts");
-        $("#nutrition-facts__serving_size_text").text("Serving Size");
-        $("#nutrition-facts__serving_per_text").text("Servings Per Recipe");
-        $("#nutrition-facts__amount_per_text").text("Amount Per Serving");
-        $("#nutrition-facts__calories_text").text("Calories");
-        $("#nutrition-facts__fat_calories_text").text("Calories from Fat");
-
-
-        $("#nutrition-facts__daily_value_text").text("% Daily Value*");
-        $("#nutrition-facts__total_fat_text").text("Total Fat");
-        $("#nutrition-facts__sat_fat_text").text("Saturated Fat");
-        $("#nutrition-facts__trans_fat_text").text("Trans Fat");
-        $("#nutrition-facts__cholesterol_text").text("Cholesterol");
-        $("#nutrition-facts__sodium_text").text("Sodium");
-
-        $("#nutrition-facts__total_carb_text").text("Total Carbohydrate");
-        $("#nutrition-facts__sugars_text").text("Sugars");
-        $("#nutrition-facts__fiber_text").text("Dietary Fiber");
-        $("#nutrition-facts__proteins_text").text("Proteins");
-
-
-
-        $("#nutrition-facts___vitamin_A_text").text("Vitamin A");
-        $("#nutrition-facts___vitamin_B_6_text").text("Vitamin B 6");
-        $("#nutrition-facts___vitamin_B_12_text").text("Vitamin B 6");
-        $("#nutrition-facts___vitamin_C_text").text("Vitamin C");
-        $("#nutrition-facts___vitamin_D_text").text("Vitamin D");
-        $("#nutrition-facts___vitamin_K_text").text("Vitamin K");
-
-
-        $("#nutrition-facts___folic_acid_text").text("Folic Acid");
-        $("#nutrition-facts___iron_text").text("Iron");
-        $("#nutrition-facts___magnesium_text").text("Magnesium");
-        $("#nutrition-facts___manganese_text").text("Manganese");
-        $("#nutrition-facts___niacin_text").text("Niacin");
-        $("#nutrition-facts___potassium_text").text("Potassium");
-        $("#nutrition-facts___total_folate_text").text("Total Folate");
-        $("#nutrition-facts___zinc_text").text("Zinc");
-
-
-        $("#dv-disclaimer").text(`* Percent Daily Values are based on a 2,000 calorie diet. Your daily values may be
-        higher or lower depending on your calorie needs:`);
-        $("#recipePanelHeading").text("Recipe");
-        $("#languagePanelHeading").text("Language");
-
+    const languages = {
+        english: {
+            title: "UArizona Garden Kitchen Nutritional Calculator",
+            ingredient: "Ingredient",
+            quantity: "Qty.",
+            unit: "Unit",
+            addIngredient: "Add Ingredient to Recipe",
+            calcRecipe: "Calculate Recipe",
+            tools: "Tools",
+            recipe: "Recipe",
+            language: "Language",
+            nutritionFacts: "Nutrition Facts",
+            servingSize: "Serving Size",
+            servingsPer: "Servings Per Recipe",
+            amountPerServing: "Amount Per Serving",
+            calories: "Calories",
+            caloriesFromFat: "Calories from Fat",
+            dailyValue: "$ Daily Value",
+            totalFat: "Total Fat",
+            satFat: "Saturated Fat",
+            transFat: "Trans Fat",
+            cholesterol: "Cholesterol",
+            sodium: "Sodium",
+            totalCarb: "Total Carbohydrates",
+            sugars: "Total Sugars",
+            dietaryFiber: "Dietary Fiber",
+            proteins: "Proteins",
+            vitamin_a: "Vitamin A",
+            vitamin_b_6: "Vitamin B 6",
+            vitamin_b_12: "Vitamin B 12",
+            vitamin_c: "Vitamin C",
+            vitamin_d: "Vitamin D",
+            vitamin_k: "Vitamin K",
+            folic_acid: "Folic Acid",
+            iron: "Iron",
+            magnesium: "Magnesium",
+            manganese: "Manganese",
+            niacin: "Niacin",
+            potassium: "Potassium",
+            total_folate: "Total Folate",
+            zinc: "Zinc",
+            disclaimer: `* The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice.`,
+            lessThan: "Less Than",
+            caloriesPerGram: "Calories Per Gram",
+            caloriesPerGramLabel: "Fat 9 &bull; Carbohydrate 4 &bull; Protein 4"
+        },
+        spanish:{
+            title: "Calculadora Nutricional de Cocina de Jardín de UArizona",
+            ingredient: "Ingrediente",
+            quantity: "Cifra",
+            unit: "Unidad",
+            addIngredient: "Agregar Ingrediente a la Receta",
+            calcRecipe: "Calcular Receta",
+            tools: "Herramientas",
+            recipe: "Receta",
+            language: "Lengua",
+            nutritionFacts: "Datos de Nutrición",
+            servingSize: "Tamaño por Porcion",
+            servingsPer: "Porciones por Receta: ",
+            amountPerServing: "Cantidad por Porcion",
+            calories: "Calorías",
+            caloriesFromFat: "Calorías de Grasa",
+            dailyValue: "$ Valor Diario",
+            totalFat: "Grasa Total",
+            satFat: "Grasa Saturada",
+            transFat: "Grasa Trans",
+            cholesterol: "Colesterol",
+            sodium: "Sodio",
+            totalCarb: "Carbohidrato Total ",
+            sugars: "Azúcares Totales",
+            dietaryFiber: "Fibra Dietética",
+            proteins: "Proteínas",
+            vitamin_a: "Vitamina A",
+            vitamin_b_6: "Vitamina B 6",
+            vitamin_b_12: "Vitamina B 12",
+            vitamin_c: "Vitamina C",
+            vitamin_d: "Vitamina D",
+            vitamin_k: "Vitamina K",
+            folic_acid: "Ácido Fólico",
+            iron: "Hierro",
+            magnesium: "Magnesio",
+            manganese: "Manganeso",
+            niacin: "Niacina",
+            potassium: "Potasso",
+            total_folate: "Folato Total",
+            zinc: "Zinc",
+            disclaimer: `* El % Valor Diario (VD) le indica cuánto un nutriente en una porción de alimentos contribuye a una dieta diaria. 2,000 calorías al día se
+            utiliza para asesoramiento de nutrición general.`,
+            lessThan: "Menos Que",
+            caloriesPerGram: "Calorías por Gramo",
+            caloriesPerGramLabel: "Grasa 9 &bull; Carbohidrato 4 &bull; Proteín 4"
+        },
     }
 
+    function showLanguage(language) {
+        $("#titleText").html(language.title)
+        $("#ingredientHeaderText").text(language.ingredient);
+        $("#ingredientQuantityHeaderText").text(language.quantity);
+        $("#ingredientQuantityUnitText").text(language.unit);
+        $("#addRow").text(language.addIngredient);
+        $("#calcRecipe").text(language.calcRecipe);
 
-    function showSpanish() {
-        $("#ingredientHeaderText").text("Ingrediente");
-        $("#ingredientQuantityHeaderText").text("Cifra");
-        $("#ingredientQuantityUnitText").text("Unidad");
-        $("#addRow").text("Agregar Ingrediente a la Receta");
-        $("#calcRecipe").text("Calcular Receta");
+        $("#toolsPanelHeadingText").text(language.tools);
+        $("#recipePanelHeading").text(language.recipe);
+        $("#languagePanelHeading").text(language.language);
+
+        $(".nutrition-facts__title").text(language.nutritionFacts);
+        $("#nutrition-facts__serving_size_text").text(language.servingSize);
+        $("#nutrition-facts__serving_per_text").text(language.servingsPer);
+        $("#nutrition-facts__amount_per_text").text(language.amountPerServing);
+        $("#nutrition-facts__calories_text").text(language.calories);
+        $("#nutrition-facts__fat_calories_text").text(language.caloriesFromFat);
+
+
+        $("#nutrition-facts__daily_value_text").text(language.dailyValue);
+        $("#nutrition-facts__total_fat_text").text(language.totalFat);
+        $("#nutrition-facts__sat_fat_text").text(language.satFat);
+        $("#nutrition-facts__trans_fat_text").text(language.transFat);
+        $("#nutrition-facts__cholesterol_text").text(language.cholesterol);
+        $("#nutrition-facts__sodium_text").text(language.sodium);
+
+        $("#nutrition-facts__total_carb_text").text(language.totalCarb);
+        $("#nutrition-facts__sugars_text").text(language.sugars);
+        $("#nutrition-facts__fiber_text").text(language.dietaryFiber);
+        $("#nutrition-facts__proteins_text").text(language.proteins);
+
+
+
+        $("#nutrition-facts___vitamin_A_text").text(language.vitamin_a);
+        $("#nutrition-facts___vitamin_B_6_text").text(language.vitamin_b_6);
+        $("#nutrition-facts___vitamin_B_12_text").text(language.vitamin_b_12);
+        $("#nutrition-facts___vitamin_C_text").text(language.vitamin_c);
+        $("#nutrition-facts___vitamin_D_text").text(language.vitamin_d);
+        $("#nutrition-facts___vitamin_K_text").text(language.vitamin_k);
+
+
+        $("#nutrition-facts___folic_acid_text").text(language.folic_acid);
+        $("#nutrition-facts___iron_text").text(language.iron);
+        $("#nutrition-facts___magnesium_text").text(language.magnesium);
+        $("#nutrition-facts___manganese_text").text(language.manganese);
+        $("#nutrition-facts___niacin_text").text(language.niacin);
+        $("#nutrition-facts___potassium_text").text(language.potassium);
+        $("#nutrition-facts___total_folate_text").text(language.total_folate);
+        $("#nutrition-facts___zinc_text").text(language.zinc);
+
+
+        $("#dv-disclaimer").text(language.disclaimer);
+        $("#nutrition-facts___calories_text").text(language.calories);
+        $("#nutrition-facts___total_fat_text").text(language.totalFat);
+        $("#nutrition-facts___sat_fat_text").text(language.satFat);
+        $("#nutrition-facts___chol_text").text(language.cholesterol);
+        $("#nutrition-facts___sodium_text").text(language.sodium);
+        $("#nutrition-facts___carbs_text").text(language.totalCarb);
+        $("#nutrition-facts___fiber_text").text(language.fiber);
+
+
+        $("#nutrition-facts___less_than").text(language.lessThan);
+        $("#nutrition-facts___fiber_text").text(language.dietaryFiber);
+        $("#calories-per-gram-label").text(language.caloriesPerGram);
+        $("#calories-per-gram-label-text").html(language.caloriesPerGramLabel);
+
     }
     
     $("#english").on("click", function (event) {
-        showEnglish();
+        showLanguage(languages.english)
     })
 
     $("#spanish").on("click", function (event) {
-        showSpanish();
+        showLanguage(languages.spanish)
     })
-    showEnglish();
+    showLanguage(languages.english);
     /**
      * Calculate the entire recipe
      */
