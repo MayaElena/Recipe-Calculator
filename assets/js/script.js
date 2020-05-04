@@ -8,31 +8,6 @@ $(document).ready(function () {
     let setLanguage = "english";
     const BASE_URL = "https://agile-shore-16925.herokuapp.com/"
 
-    function loadIngredients(cb) {
-        showLoader()
-        $.ajax({
-            method: "GET",
-            url: BASE_URL + "api/ingredients"
-        }).then(ingredientsData => {
-            ingredientsData.forEach(ingredient => {
-                ingredients[ingredient.fullname] = ingredient
-            })
-            //console.log(ingredients)
-            fuzzy = FuzzySet(getIngredientKeys(), true, 1, 2);
-
-            cb();
-        })
-    }
-
-
-    loadIngredients(initialLoad);
-
-
-    // API KEY
-    var API_KEY = 'OvxhffEpFz6pKGUuHIfZW9MW8ZxJ2QcSmCtP1j1V';
-
-    // BOILERPLATE
-
 
 
     const languages = {
@@ -121,7 +96,7 @@ $(document).ready(function () {
             amountPerServing: "Cantidad por Porcion",
             calories: "Calorías",
             caloriesFromFat: "Calorías de Grasa",
-            dailyValue: "$ Valor Diario",
+            dailyValue: "% Valor Diario",
             totalFat: "Grasa Total",
             satFat: "Grasa Saturada",
             transFat: "Grasa Trans",
@@ -151,6 +126,23 @@ $(document).ready(function () {
             caloriesPerGram: "Calorías por Gramo",
             caloriesPerGramLabel: "Grasa 9 &bull; Carbohidrato 4 &bull; Proteín 4"
         },
+    }
+
+
+    function loadIngredients(cb) {
+        showLoader()
+        $.ajax({
+            method: "GET",
+            url: BASE_URL + "api/ingredients"
+        }).then(ingredientsData => {
+            ingredientsData.forEach(ingredient => {
+                ingredients[ingredient.fullname] = ingredient
+            })
+            //console.log(ingredients)
+            fuzzy = FuzzySet(getIngredientKeys(), true, 1, 2);
+
+            cb();
+        })
     }
 
     function showLanguage() {
@@ -227,18 +219,7 @@ $(document).ready(function () {
 
     }
     
-    $("#english").on("click", function (event) {
 
-        setLanguage = "english";
-        showLanguage()
-    })
-
-    $("#spanish").on("click", function (event) {
-        
-        setLanguage = "spanish"
-        showLanguage()
-    })
-    showLanguage();
     /**
      * Calculate the entire recipe
      */
@@ -334,10 +315,6 @@ $(document).ready(function () {
 
 
         finalCalc.calories_from_fat = finalCalc.total_fat * 9
-        //console.log(finalCalc)
-        // for(var i =)
-
-        // calculateErrors
 
         for (const key in finalCalc) {
             finalCalc[key] = finalCalc[key] / servings
@@ -387,7 +364,6 @@ $(document).ready(function () {
 
             }
         }
-
 
         let totalcaloriesDV = Number(finalCalc.calories) / DVs.total_calories * 100;
         let totalFatDV = Number(finalCalc.total_fat) / DVs.total_fat * 100;
@@ -570,9 +546,6 @@ $(document).ready(function () {
 
         }
 
-
-
-
         let vitaminADV = Number(finalCalc.vitamin_a) / DVs.vitamin_a * 100;
         let vitamin_b_6DV = Number(finalCalc.vitamin_b_6) / DVs.vitamin_b_6 * 100;
         let vitamin_b_12DV = Number(finalCalc.vitamin_b_12) / DVs.vitamin_b_12 * 100;
@@ -606,26 +579,10 @@ $(document).ready(function () {
 
     }
 
-
-    /**
-     *  Checks errors against AZ Health zone guidlines
-     */
-    function calculateErrors() {
-        //throw modal error per AZ health zone guidleines
-
-        // highlight TWOs highest offendign ingredients
-    }
-
-
-    function generateDVPercent(is2000 = true, finalCalc) {
-
-
-    }
-
     function generateNutrientWarningMessage(problem, valueName, value, valueThreshold){
-        return $(`<tr class='error'><td colspan="3" class="alert alert-dismissible alert-${value > valueThreshold ? 'warning' : 'danger'}">
+        return $(`<tr class='error'><td colspan="3" class="alert alert-dismissible alert-${value < valueThreshold ? 'warning' : 'danger'}">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true"><i class="ua-brand-x"></i></span></button>
-                    <h4><span class="text-capitalize">${problem}</span> is/are ${value > valueThreshold ? 'very' : 'extremely'} high in ${valueName}, part of a healthy diet is monitoring our ${valueName}! Consider a different ingredient or amount of <span class="text-capitalize">${problem}</span>.</h4>
+                    <h4><span class="text-capitalize">${problem}</span> is/are ${value < valueThreshold ? 'very' : 'extremely'} high in ${valueName}, part of a healthy diet is monitoring our ${valueName}! Consider a different ingredient or amount of <span class="text-capitalize">${problem}</span>.</h4>
 
                   </td></tr>`)
     }
@@ -717,7 +674,17 @@ $(document).ready(function () {
     }
 
 
+    $("#english").on("click", function (event) {
 
+        setLanguage = "english";
+        showLanguage()
+    })
+
+    $("#spanish").on("click", function (event) {
+        
+        setLanguage = "spanish"
+        showLanguage()
+    })
 
     $(document).on("click", ".delete_row", function (event) {
         event.preventDefault();
@@ -828,7 +795,8 @@ $(document).ready(function () {
 
 
 
-
+    loadIngredients(initialLoad);
+    showLanguage();
 
 
 
