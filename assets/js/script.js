@@ -5,7 +5,7 @@ $(document).ready(function () {
     let fuzzy;
     let count = 0;
     const ingredients = {};
-
+    let setLanguage = "english";
     const BASE_URL = "https://agile-shore-16925.herokuapp.com/"
 
     function loadIngredients(cb) {
@@ -17,7 +17,7 @@ $(document).ready(function () {
             ingredientsData.forEach(ingredient => {
                 ingredients[ingredient.fullname] = ingredient
             })
-            console.log(ingredients)
+            //console.log(ingredients)
             fuzzy = FuzzySet(getIngredientKeys(), true, 1, 2);
 
             cb();
@@ -82,6 +82,30 @@ $(document).ready(function () {
             caloriesPerGramLabel: "Fat 9 &bull; Carbohydrate 4 &bull; Protein 4"
         },
         spanish:{
+            measures: {
+                pounds: "libra",
+                gallon: "galón",
+                teaspoon: "cucharadita",
+                tablespoon: "cucharada",
+                sliced: "rebanado",
+                mashed: "machacado",
+                "NLEA serving": "Servicio de NLEA",
+                serving: "servicio",
+                small: "pico",
+                extra: "muy",
+                medium: "medio",
+                large: "grande",
+                long: "largo",
+                fillet: "filete",
+                package: "paquete",
+                container: "envase",
+                "pint as purchased, yields": "pinta como comprada, rendimientos",
+                cup: "taza",
+                tsp: "cucharadita",
+                tbsp: "cucharada",
+                oz: "onza",
+                lb: "libra"
+            },
             title: "Calculadora Nutricional de Cocina de Jardín de UArizona",
             ingredient: "Ingrediente",
             quantity: "Cifra",
@@ -129,7 +153,12 @@ $(document).ready(function () {
         },
     }
 
-    function showLanguage(language) {
+    function showLanguage() {
+        $(`.unit`).val('')
+        $(`.language-unit-option`).attr('hidden', true)
+        $(`.${setLanguage}-option`).attr("hidden", false);
+
+        let language = languages[setLanguage]
         $("#titleText").html(language.title)
         $("#ingredientHeaderText").text(language.ingredient);
         $("#ingredientQuantityHeaderText").text(language.quantity);
@@ -199,13 +228,17 @@ $(document).ready(function () {
     }
     
     $("#english").on("click", function (event) {
-        showLanguage(languages.english)
+
+        setLanguage = "english";
+        showLanguage()
     })
 
     $("#spanish").on("click", function (event) {
-        showLanguage(languages.spanish)
+        
+        setLanguage = "spanish"
+        showLanguage()
     })
-    showLanguage(languages.english);
+    showLanguage();
     /**
      * Calculate the entire recipe
      */
@@ -631,12 +664,17 @@ $(document).ready(function () {
     }
 
 
-    async function processNutritionalData(recipe) {
-        const response = await $.ajax({
-
+    function generateMeasure(measures, unitText){
+        let finalText = unitText;
+        let translatedMeasures = Object.entries(measures);
+        //console.log(translatedMeasures)
+        translatedMeasures.forEach(pair => {
+            if(finalText.includes(pair[0])){
+                finalText = finalText.replace(pair[0], pair[1])
+            }
         })
+        return finalText;
     }
-
 
     function clearAndDisableRow(id) {
         $(`#row-${id}-quantity`).val("").attr("disabled", true)
@@ -648,9 +686,10 @@ $(document).ready(function () {
         $(`#row-${id}-quantity`).val("").attr("disabled", false)
         $(`#row-${id}-unit`).val("").attr("disabled", false)
         $(`.row-${id}-unit-option`).remove()
-        const ingredient = ingredients[ingredientName];
+        const ingredient = ingredients[ingredientName.toLowerCase()];
         ingredient.measures.forEach(measure => {
-            $(`#row-${id}-unit`).append($(`<option class="row-${id}-unit-option" value="${measure.conversion}">${measure.unit}</option>`))
+            $(`#row-${id}-unit`).append($(`<option class="row-${id}-unit-option english-option language-unit-option" ${setLanguage === "english" ? "" : "hidden"} value="${measure.conversion}">${measure.unit}</option>`))
+            $(`#row-${id}-unit`).append($(`<option class="row-${id}-unit-option spanish-option language-unit-option" ${setLanguage === "spanish" ? "" : "hidden"} value="${measure.conversion}">${generateMeasure(languages.spanish.measures, measure.unit)}</option>`))
         })
     }
 
@@ -754,7 +793,7 @@ $(document).ready(function () {
                         alert(`Row ${rowId}: Sorry, we couldn't find nutritional information for '${ingredientName}'`)
                         hideLoader()
                     }
-                    console.log(foods)
+                    //console.log(foods)
 
                 }).fail(err => {
                     clearAndDisableRow(rowId)
