@@ -765,11 +765,13 @@ $(document).ready(function () {
                 }).fail(err => {
                     clearAndDisableRow(rowId)
                     alert(`Row ${rowId}: Sorry, we couldn't find nutritional information for '${ingredientName}'`)
+                    hideLoader()
                 })
             }
         }
         else {
             alert(`Row ${rowId}: An Unspecified Error Occurred! Sorry!`)
+            hideLoader()
             //console.log(ingredientName)
         }
     });
