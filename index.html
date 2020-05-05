@@ -350,6 +350,43 @@
     <div class="row">
 
     </div>
+
+    <div id="ingredientModal" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i aria-hidden="true" class="ua-brand-x"></i></button>
+            <h4 class="modal-title">Ingredient Not Found!</h4>
+          </div>
+          <div class="modal-body">
+            <p>Oh no! We weren't able to find that <strong>exact</strong> ingredient preloaded, however, we can try the following: Please click the 'pick' button to select your option, or close this modal and try again.
+            </p>
+            <div class="picker hide-picker" id="ingredientMatchFuzzy">
+              <h4>Fuzzy Logic Match</h4>
+              <p>Did you mean '<span id="ingredientMatchFuzzyText"> </span>'?</p>
+              <button type="button" data-row-id="1" data-ingredient="salmon"  id="ingredientMatchFuzzyButton"  class="btn btn-default pick-ingredient" data-dismiss="modal">Pick</button>
+            </div>
+            <div class="picker hide-picker" id="ingredientMatchError">
+              <h4>Misspelling Match</h4>
+              <p>Did you mean '<span id="ingredientMatchErrorText"> </span>'?</p>
+              <button type="button" data-row-id="1" data-ingredient="" id="ingredientMatchErrorButton"  class="btn btn-default pick-ingredient"  data-dismiss="modal">Pick</button>
+            </div>
+            <div class="picker hide-picker" id="ingredientMatchAPI">
+              <h4>Load New Ingredient</h4>
+              <p>Our API has suggested the following ingredient: '<span id="ingredientMatchAPIText"> </span>'</p>
+              <button type="button"  data-row-id="1" data-ingredient="" id="ingredientMatchAPIButton" class="btn btn-default pick-ingredient"  data-dismiss="modal">Pick</button>
+            </div>
+            <div>
+              <h4>None of these!</h4>
+              <p>Sorry about that, we are unable to understand the ingredient you inputted. Please try to be very specific and check for misspellings.</p>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
 

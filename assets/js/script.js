@@ -56,7 +56,7 @@ $(document).ready(function () {
             caloriesPerGram: "Calories Per Gram",
             caloriesPerGramLabel: "Fat 9 &bull; Carbohydrate 4 &bull; Protein 4"
         },
-        spanish:{
+        spanish: {
             measures: {
                 pounds: "libra",
                 gallon: "galón",
@@ -218,7 +218,7 @@ $(document).ready(function () {
         $("#calories-per-gram-label-text").html(language.caloriesPerGramLabel);
 
     }
-    
+
 
     /**
      * Calculate the entire recipe
@@ -539,7 +539,7 @@ $(document).ready(function () {
             let erroredProblems = []
             problems.forEach((problem, index) => {
                 if (index < 2 && erroredProblems.indexOf(problem.fullname) == -1) {
-                  $(`#row-${problem.id}`).after(generateNutrientWarningMessage(problem.name, "fiber", dietaryFiberDV,ERROR_DV_THRESHOLD))
+                    $(`#row-${problem.id}`).after(generateNutrientWarningMessage(problem.name, "fiber", dietaryFiberDV, ERROR_DV_THRESHOLD))
                 }
                 erroredProblems.push(problem.fullname)
             })
@@ -579,7 +579,7 @@ $(document).ready(function () {
 
     }
 
-    function generateNutrientWarningMessage(problem, valueName, value, valueThreshold){
+    function generateNutrientWarningMessage(problem, valueName, value, valueThreshold) {
         return $(`<tr class='error'><td colspan="3" class="alert alert-dismissible alert-${value < valueThreshold ? 'warning' : 'danger'}">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true"><i class="ua-brand-x"></i></span></button>
                     <h4><span class="text-capitalize">${problem}</span> is/are ${value < valueThreshold ? 'very' : 'extremely'} high in ${valueName}, part of a healthy diet is monitoring our ${valueName}! Consider a different ingredient or amount of <span class="text-capitalize">${problem}</span>.</h4>
@@ -621,12 +621,12 @@ $(document).ready(function () {
     }
 
 
-    function generateMeasure(measures, unitText){
+    function generateMeasure(measures, unitText) {
         let finalText = unitText;
         let translatedMeasures = Object.entries(measures);
         //console.log(translatedMeasures)
         translatedMeasures.forEach(pair => {
-            if(finalText.includes(pair[0])){
+            if (finalText.includes(pair[0])) {
                 finalText = finalText.replace(pair[0], pair[1])
             }
         })
@@ -681,7 +681,7 @@ $(document).ready(function () {
     })
 
     $("#spanish").on("click", function (event) {
-        
+
         setLanguage = "spanish"
         showLanguage()
     })
@@ -712,69 +712,83 @@ $(document).ready(function () {
             hideLoader()
         }
         else if (ingredients[ingredientName] === null || ingredients[ingredientName] === undefined) {
-            let useFuzzy = false;
-            let useHard = false;
+
+
+            let hardFind = getIngredientKeys().find(element => element.includes(ingredientName.toLowerCase()))
+            if (hardFind !== undefined) {
+                populatePickers("Error", rowId, hardFind)
+            }
             const found = fuzzy.get(ingredientName.toLowerCase());
             if (found && found.length > 0) {
-                const newFind = found[0][1];
-                useFuzzy = confirm(`Did you mean '${newFind}'?`)
-                if (useFuzzy) {
-                    $(this).val(newFind)
-                    enableAndPopulateRow(rowId, newFind)
-                    hideLoader()
+                let i = 0;
+                while(i < found.length){
+                    if(found[0][1] !== hardFind){
+                        const newFind = found[0][1];
+                        populatePickers("Fuzzy", rowId, newFind)
+                        break;
+                    }
+                    else{
+                        i++
+                    }
                 }
             }
-            let hardFind = getIngredientKeys().find(element => element.includes(ingredientName.toLowerCase()))
-            if (hardFind !== undefined && !useFuzzy) {
-                useHard = confirm(`Did you mean '${hardFind}'?`)
-                if (useHard) {
-                    $(this).val(hardFind)
-                    enableAndPopulateRow(rowId, hardFind)
-                    hideLoader()
+            $.ajax({
+                method: "POST",
+                url: BASE_URL + "api/generateFood",
+                data: {
+                    query: `1 ${ingredientName}`
+                },
+                timeout: 5000
+            }).then((foods) => {
+                if (foods[0] && foods[0].fullname) {
+                    loadIngredients(generateIngredientLists)
+                    populatePickers("API", rowId, foods[0].fullname)
+                    showPickerModal()
+                    // let id = rowId
+                    // let foundFood = foods[0].fullname;
+                    // if (useGenerated) {
+                    //     setTimeout(function () {
+                    //         row.val(foundFood)
+                    //         enableAndPopulateRow(id, foundFood)
+                    //         hideLoader()
+                    //     }, 2000);
+                    // }
                 }
-            }
-            if (!useFuzzy && !useHard) {
-                $.ajax({
-                    method: "POST",
-                    url: BASE_URL + "api/generateFood",
-                    data: {
-                        query: `1 ${ingredientName}`
-                    },
-                    timeout: 5000
-                }).then((foods) => {
-                    if (foods[0] && foods[0].fullname) {
-                        const useGenerated = confirm(`Did you mean '${foods[0].fullname}'?`)
-                        loadIngredients(generateIngredientLists)
-                        let id = rowId
-                        let foundFood = foods[0].fullname;
-                        if (useGenerated) {
-                            setTimeout(function () {
-                                row.val(foundFood)
-                                enableAndPopulateRow(id, foundFood)
-                                hideLoader()
-                            }, 2000);
-                        }
-                    }
-                    else {
-                        clearAndDisableRow(rowId)
-                        alert(`Row ${rowId}: Sorry, we couldn't find nutritional information for '${ingredientName}'`)
-                        hideLoader()
-                    }
-                    //console.log(foods)
-
-                }).fail(err => {
+                else {
                     clearAndDisableRow(rowId)
-                    alert(`Row ${rowId}: Sorry, we couldn't find nutritional information for '${ingredientName}'`)
-                    hideLoader()
-                })
-            }
+                    showPickerModal()
+                }
+                //console.log(foods)
+
+            }).fail(err => {
+                clearAndDisableRow(rowId)
+                showPickerModal();
+            })
+
         }
         else {
             alert(`Row ${rowId}: An Unspecified Error Occurred! Sorry!`)
-            hideLoader()
+
             //console.log(ingredientName)
         }
     });
+
+
+    function showPickerModal() {
+
+        $('#ingredientModal').modal()
+        hideLoader()
+    }
+
+
+    function populatePickers(field, rowId, ingredient) {
+        $(`#ingredientMatch${field}`).removeClass("hide-picker")
+        // <h4>Load New Ingredient</h4>
+        // <p>Our API has suggested the following ingredient: '<span id="ingredientMatchAPIText">'</span></p>
+        // <button type="button"  data-row-id="1" data-ingredient="" id="ingredientMatchAPIButton" class="btn btn-default pick-ingredient"  data-dismiss="modal">Pick</button>
+        $(`#ingredientMatch${field}Text`).text(ingredient);
+        $(`#ingredientMatch${field}Button`).data("ingredient", ingredient).data("row-id", rowId);
+    }
 
 
     $("#getData").on("click", function (event) {
@@ -803,6 +817,14 @@ $(document).ready(function () {
 
 
 
+    $('.pick-ingredient').on("click", function (event) {
+        const rowId = $(this).data("row-id")
+        const ingredient = $(this).data("ingredient")
+        $(`#row-${rowId}-ingredient`).val(ingredient)
+        enableAndPopulateRow(rowId, ingredient);
+        $(`.picker`).addClass("hide-picker");
+        hideLoader()
+    })
 
     // End Space for javascript
     // BOILERPLATE

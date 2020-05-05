@@ -65,6 +65,9 @@ p {
   100% { transform: rotate(360deg); }
 }
 
+.hide-picker {
+  display:none;
+}
 .warning {
   background-color: red;
 }
