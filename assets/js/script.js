@@ -35,6 +35,7 @@ $(document).ready(function () {
             sodium: "Sodium",
             totalCarb: "Total Carbohydrates",
             sugars: "Total Sugars",
+            added_sugars: "Added Sugars",
             dietaryFiber: "Dietary Fiber",
             proteins: "Proteins",
             vitamin_a: "Vitamin A",
@@ -104,6 +105,7 @@ $(document).ready(function () {
             sodium: "Sodio",
             totalCarb: "Carbohidrato Total ",
             sugars: "Azúcares Totales",
+            added_sugars: "Azúcares Añadidos",
             dietaryFiber: "Fibra Dietética",
             proteins: "Proteínas",
             vitamin_a: "Vitamina A",
@@ -179,6 +181,7 @@ $(document).ready(function () {
 
         $("#nutrition-facts__total_carb_text").text(language.totalCarb);
         $("#nutrition-facts__sugars_text").text(language.sugars);
+        $("#nutrition-facts__added_sugars_text").text(language.added_sugars);
         $("#nutrition-facts__fiber_text").text(language.dietaryFiber);
         $("#nutrition-facts__proteins_text").text(language.proteins);
 
@@ -224,6 +227,7 @@ $(document).ready(function () {
      * Calculate the entire recipe
      */
     async function calcRecipe() {
+        resetErrorModal()
         const rows = $(".ingredientRow");
         //console.log(rows);
         const configuredData = [];
@@ -257,6 +261,7 @@ $(document).ready(function () {
             total_carbohydrates: 0,
             dietary_fiber: 0,
             sugars: 0,
+            added_sugars: 0,
             protein: 0,
             potassium: 0,
             folic_acid: 0,
@@ -284,7 +289,7 @@ $(document).ready(function () {
                 conversionFactor = conversionFactor / 100;
             }
             //console.log(conversionFactor, datapoint)
-            const { calories, cholesterol, dietary_fiber, folic_acid, fructose, iron, magnesium, manganese, niacin, potassium, protein, saturated_fat, sodium, sugars, total_carbohydrates, total_fat, total_folate, vitamin_a, vitamin_b_6, vitamin_b_12, vitamin_c, vitamin_d, vitamin_k, zinc } = datapoint.ingredient.nutrients
+            const { calories, cholesterol, dietary_fiber, folic_acid, fructose, iron, added_sugars, magnesium, manganese, niacin, potassium, protein, saturated_fat, sodium, sugars, total_carbohydrates, total_fat, total_folate, vitamin_a, vitamin_b_6, vitamin_b_12, vitamin_c, vitamin_d, vitamin_k, zinc } = datapoint.ingredient.nutrients
             finalCalc.calories += calories * conversionFactor;
             finalCalc.total_fat += total_fat * conversionFactor;
             finalCalc.saturated_fat += saturated_fat * conversionFactor;
@@ -293,6 +298,7 @@ $(document).ready(function () {
             finalCalc.total_carbohydrates += total_carbohydrates * conversionFactor;
             finalCalc.dietary_fiber += dietary_fiber * conversionFactor;
             finalCalc.sugars += sugars * conversionFactor;
+            finalCalc.added_sugars += added_sugars * conversionFactor;
             finalCalc.protein += protein * conversionFactor;
             finalCalc.potassium += potassium * conversionFactor;
             finalCalc.folic_acid += folic_acid * conversionFactor;
@@ -333,6 +339,7 @@ $(document).ready(function () {
         $("#nutrition-facts__total_carb").text(Number(finalCalc.total_carbohydrates).toFixed(1));
         $("#nutrition-facts__fiber").text(Number(finalCalc.dietary_fiber).toFixed(0));
         $("#nutrition-facts__sugars").text(Number(finalCalc.sugars).toFixed(1));
+        $("#nutrition-facts__added_sugars").text(Number(finalCalc.added_sugars).toFixed(1));
         $("#nutrition-facts__proteins").text(Number(finalCalc.protein).toFixed(1));
 
         let is2000 = true;
@@ -577,6 +584,32 @@ $(document).ready(function () {
         $("#nutrition-facts___total_folate").text(total_folateDV.toFixed(0))
         $("#nutrition-facts___zinc").text(zincDV.toFixed(0))
 
+
+        if((finalCalc.saturated_fat * 9 ) >= finalCalc.calories /10){
+            $("#satFatError").removeClass("hide-error");
+            showErrorModal();
+        }
+
+        if(Number(finalCalc.trans_fat) >= .5){
+            $("#transFatError").removeClass("hide-error");
+            showErrorModal();
+        }
+
+        if(Number(finalCalc.sodium) >= 480){
+            $("#sodiumError").removeClass("hide-error");
+            showErrorModal();
+        }
+
+        if(Number(finalCalc.fiber)/finalCalc.calories >= .014){
+            $("#fiberError").removeClass("hide-error");
+            showErrorModal();
+        }
+
+        if(Number(finalCalc.added_sugars) * 4 >= (finalCalc.calories * .15)){
+            $("#sugarError").removeClass("hide-error");
+            showErrorModal();
+        }
+
     }
 
     function generateNutrientWarningMessage(problem, valueName, value, valueThreshold) {
@@ -773,6 +806,13 @@ $(document).ready(function () {
         }
     });
 
+    function resetErrorModal(){
+        $(`.error-modal`).addClass("hide-error")
+    }
+
+    function showErrorModal(){
+        $(`#errorModal`).modal();
+    }
 
     function showPickerModal() {
 
@@ -825,6 +865,8 @@ $(document).ready(function () {
         $(`.picker`).addClass("hide-picker");
         hideLoader()
     })
+
+
 
     // End Space for javascript
     // BOILERPLATE

@@ -23,10 +23,14 @@
   <div class="container">
 
     <div class="row">
-      <div class="col-md-8 d-flex justify-content-center" id="title">
-      <h1 id="titleText"></h1>
-    </div>
+      <div class="col-md-6 d-flex justify-content-center" id="title">
+        <h1 id="titleText"></h1>
+      </div>
+      <div class="col-md-5  d-flex justify-content-center">
+        <img src="assets/images/TGKLogo.png">
 
+      </div>
+    </div>
     <div class="row">
       <div class="col-xs-12 col-md-6">
         <div style="text-align: center;">
@@ -36,26 +40,28 @@
         <div id="ingredientTableDiv" class="table-responsive">
           <table class="table-striped" id="ingredientTable">
             <tr>
-              <th id="ingredientHeader" >
+              <th id="ingredientHeader">
                 <h5 id="ingredientHeaderText" class="text-azurite"></h5>
               </th>
               <th id="ingredientQuantityHeader">
                 <h5 id="ingredientQuantityHeaderText" class="text-azurite"></h5>
               </th>
-              <th id="ingredientQuantityUnit" >
+              <th id="ingredientQuantityUnit">
                 <h5 id="ingredientQuantityUnitText" class="text-azurite"></h5>
               </th>
-              <th id="ingredientDelete" >
+              <th id="ingredientDelete">
 
               </th>
             </tr>
           </table>
         </div>
         <div class="panel panel-default">
-          <div id="toolsPanelHeading" class="panel-heading"><h3 class="margin-zero-bottom margin-zero-top" id="toolsPanelHeadingText"></h3></div>
+          <div id="toolsPanelHeading" class="panel-heading">
+            <h3 class="margin-zero-bottom margin-zero-top" id="toolsPanelHeadingText"></h3>
+          </div>
           <div class="panel-body">
             <div class="row">
-              <h4  id="recipePanelHeading"  style="margin-left:15px;"></h4>
+              <h4 id="recipePanelHeading" style="margin-left:15px;"></h4>
               <div class="btn-group" role="group" aria-label="Recipe Tools">
                 <div class="col-md-6 button-col mx-auto">
                   <button class="btn btn-default" id="addRow"></button>
@@ -68,7 +74,7 @@
 
 
             <div class="row">
-              <h4  id="languagePanelHeading" style="margin-left:15px;"></h4>
+              <h4 id="languagePanelHeading" style="margin-left:15px;"></h4>
               <div class="btn-group" role="group" aria-label="Language Selector">
                 <div class="col-md-6 button-col mx-auto">
                   <button class="btn btn-default" id="english">English</button>
@@ -89,9 +95,10 @@
         <section class="nutrition-facts">
           <header class="nutrition-facts__header">
             <h1 class="nutrition-facts__title"></h1>
-            <p><span id="nutrition-facts__serving_size_text"></span> <span id="nutrition-facts__serving_size"></span> g</p>
-            <p><span id="nutrition-facts__serving_per_text"></span> <input style="margin-left: 20px; width: 40px;" id="nutrition-facts__serving_per"
-                step="1" value="1" type="number" min="1"></p>
+            <p><span id="nutrition-facts__serving_size_text"></span> <span id="nutrition-facts__serving_size"></span>
+              g</p>
+            <p><span id="nutrition-facts__serving_per_text"></span> <input style="margin-left: 20px; width: 40px;"
+                id="nutrition-facts__serving_per" step="1" value="1" type="number" min="1"></p>
           </header>
           <table class="nutrition-facts__table">
             <thead>
@@ -194,6 +201,16 @@
                 <th>
                   <span id="nutrition-facts__sugars_text"></span>:
                   <span id="nutrition-facts__sugars"></span>g
+                </th>
+                <td>
+                </td>
+              </tr>
+              <tr>
+                <td class="blank-cell">
+                </td>
+                <th>
+                  <span id="nutrition-facts__added_sugars_text"></span>:
+                  <span id="nutrition-facts__added_sugars"></span>g
                 </th>
                 <td>
                 </td>
@@ -355,30 +372,42 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i aria-hidden="true" class="ua-brand-x"></i></button>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i aria-hidden="true"
+                class="ua-brand-x"></i></button>
             <h4 class="modal-title">Ingredient Not Found!</h4>
           </div>
           <div class="modal-body">
-            <p>Oh no! We weren't able to find that <strong>exact</strong> ingredient preloaded, however, we can try the following: Please click the 'pick' button to select your option, or close this modal and try again.
+            <p>Oh no! We weren't able to find that <strong>exact</strong> ingredient preloaded, however, we can try
+              the following: Please click the 'pick' button to select your option, or close this modal and try again.
             </p>
             <div class="picker hide-picker" id="ingredientMatchFuzzy">
               <h4>Fuzzy Logic Match</h4>
               <p>Did you mean '<span id="ingredientMatchFuzzyText"> </span>'?</p>
-              <button type="button" data-row-id="1" data-ingredient="salmon"  id="ingredientMatchFuzzyButton"  class="btn btn-default pick-ingredient" data-dismiss="modal">Pick</button>
+              <button type="button" data-row-id="1" data-ingredient="salmon" id="ingredientMatchFuzzyButton"
+                class="btn btn-default pick-ingredient" data-dismiss="modal">Pick</button>
             </div>
             <div class="picker hide-picker" id="ingredientMatchError">
               <h4>Misspelling Match</h4>
               <p>Did you mean '<span id="ingredientMatchErrorText"> </span>'?</p>
-              <button type="button" data-row-id="1" data-ingredient="" id="ingredientMatchErrorButton"  class="btn btn-default pick-ingredient"  data-dismiss="modal">Pick</button>
+              <button type="button" data-row-id="1" data-ingredient="" id="ingredientMatchErrorButton"
+                class="btn btn-default pick-ingredient" data-dismiss="modal">Pick</button>
             </div>
             <div class="picker hide-picker" id="ingredientMatchAPI">
               <h4>Load New Ingredient</h4>
               <p>Our API has suggested the following ingredient: '<span id="ingredientMatchAPIText"> </span>'</p>
-              <button type="button"  data-row-id="1" data-ingredient="" id="ingredientMatchAPIButton" class="btn btn-default pick-ingredient"  data-dismiss="modal">Pick</button>
+              <button type="button" data-row-id="1" data-ingredient="" id="ingredientMatchAPIButton"
+                class="btn btn-default pick-ingredient" data-dismiss="modal">Pick</button>
+            </div>
+            <div class="picker hide-picker" id="ingredientMatchAPI">
+              <h4>Load New Ingredient</h4>
+              <p>Our API has suggested the following ingredient: '<span id="ingredientMatchAPIText"> </span>'</p>
+              <button type="button" data-row-id="1" data-ingredient="" id="ingredientMatchAPIButton"
+                class="btn btn-default pick-ingredient" data-dismiss="modal">Pick</button>
             </div>
             <div>
               <h4>None of these!</h4>
-              <p>Sorry about that, we are unable to understand the ingredient you inputted. Please try to be very specific and check for misspellings.</p>
+              <p>Sorry about that, we are unable to understand the ingredient you inputted. Please try to be very
+                specific and check for misspellings.</p>
             </div>
           </div>
           <div class="modal-footer">
@@ -387,9 +416,85 @@
         </div>
       </div>
     </div>
+
+
+
+    <div id="errorModal" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i aria-hidden="true"
+                class="ua-brand-x"></i></button>
+            <h4 class="modal-title">Warning!</h4>
+          </div>
+          <div class="modal-body">
+            <div>
+              <h4>
+                The Garden Kitchen recommends....
+              </h4>
+            </div>
+            <div id="satFatError" class="error-modal hide-error">
+              <h4>
+                ERROR TITLE: Saturated Fat ≤ 10% Kcals
+              </h4>
+              <p>
+                ERROR MESSAGE: Saturated Fat ≤ 10% Kcals
+              </p>
+            </div>
+            <div id="transFatError" class="error-modal hide-error">
+              <h4>
+                ERROR TITLE: Trans Fat ≤ 0.5 g/serving
+              </h4>
+              <p>
+                ERROR MESSAGE: Trans Fat ≤ 0.5 g/serving
+              </p>
+            </div>
+            <div id="sodiumError" class="error-modal hide-error">
+              <h4>
+                ERROR TITLE: Sodium ≤ 480 mg/serving
+              </h4>
+              <p>
+                ERROR MESSAGE: Sodium ≤ 480 mg/serving
+              </p>
+            </div>
+            <div id="fiberError" class="error-modal hide-error">
+              <h4>
+                ERROR TITLE: Fiber ≥ 0.014 g/Kcal1
+              </h4>
+              <p>
+                ERROR MESSAGE: Fiber ≥ 0.014 g/Kcal1
+              </p>
+            </div>
+            <div id="sugarError" class="error-modal hide-error">
+              <h4>
+                ERROR TITLE: Added Sugars &lt;15% Kcals
+              </h4>
+              <p>
+                ERROR MESSAGE: Added Sugars &lt;15% Kcals
+              </p>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
   </div>
 
-
+  </div>
 
   <!-- End Space for HTML -->
 

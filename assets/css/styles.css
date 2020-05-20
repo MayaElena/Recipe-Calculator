@@ -68,6 +68,11 @@ p {
 .hide-picker {
   display:none;
 }
+
+.hide-error {
+  display:none;
+}
+
 .warning {
   background-color: red;
 }
