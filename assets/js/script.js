@@ -55,7 +55,9 @@ $(document).ready(function () {
             disclaimer: `* The % Daily Value (DV) tells you how much a nutrient in a serving of food contributes to a daily diet. 2,000 calories a day is used for general nutrition advice.`,
             lessThan: "Less Than",
             caloriesPerGram: "Calories Per Gram",
-            caloriesPerGramLabel: "Fat 9 &bull; Carbohydrate 4 &bull; Protein 4"
+            caloriesPerGramLabel: "Fat 9 &bull; Carbohydrate 4 &bull; Protein 4",
+            help: "Show Help",
+            helpPanelHeading: "Help"
         },
         spanish: {
             measures: {
@@ -126,7 +128,9 @@ $(document).ready(function () {
             utiliza para asesoramiento de nutrición general.`,
             lessThan: "Menos Que",
             caloriesPerGram: "Calorías por Gramo",
-            caloriesPerGramLabel: "Grasa 9 &bull; Carbohidrato 4 &bull; Proteín 4"
+            caloriesPerGramLabel: "Grasa 9 &bull; Carbohidrato 4 &bull; Proteín 4",
+            help: "Mostrar Ayuda",
+            helpPanelHeading: "Ayuda"
         },
     }
 
@@ -220,6 +224,8 @@ $(document).ready(function () {
         $("#calories-per-gram-label").text(language.caloriesPerGram);
         $("#calories-per-gram-label-text").html(language.caloriesPerGramLabel);
 
+        $("#helpPanelHeading").text(language.helpPanelHeading);
+        $("#help").text(language.help);
     }
 
 
@@ -633,24 +639,24 @@ $(document).ready(function () {
         const ingredientTable = $("#ingredientTable");
         const newRow = $(`  <tr class="ingredientRow" id="row-${count}" data-id="${count}">
         <td>
-          <input type="text" list="ingredients-list" name="ingredient_name" class="ingredient_name form-control" id="row-${count}-ingredient" data-id="${count}"/>
+          <input type="text" list="ingredients-list" name="ingredient_name" class="ingredient_name form-control" id="row-${count}-ingredient" data-id="${count}" data-toggle="tooltip" data-placement="left" title="Ingredient #${count}"/>
           <datalist class="ingredients-list">
             ${getIngredientKeys().sort().map((value, key) => {
             return `<option value="${value}">${value}</option>`
         })}
         </td>
         <td>
-          <input type="number" step=.25 min=0 class="quantity form-control" id="row-${count}-quantity" data-id="${count}" disabled/>
+          <input type="number" step=.25 min=0 class="quantity form-control" id="row-${count}-quantity" data-id="${count}" data-toggle="tooltip" data-placement="left" title="Ingredient #${count} Quantity" disabled/>
         </td>
         <td>
-          <select list="row-${count}-unit-choices" class="unit form-control" id="row-${count}-unit" data-id="${count}" disabled/>
+          <select list="row-${count}-unit-choices" class="unit form-control" id="row-${count}-unit" data-id="${count}" data-toggle="tooltip" data-placement="left" title="Ingredient #${count} Unit of Measure" disabled/>
         </td>
         <td>
-        <button type="button" class="btn btn-default delete_row" data-id="${count}"><i class="btn-icon ua-brand-x">&nbsp;</i></button>
+        <button type="button" class="btn btn-default delete_row" data-id="${count}" data-toggle="tooltip" data-placement="left" title="Delete Ingredient #${count}"><i class="btn-icon ua-brand-x">&nbsp;</i></button>
         </td>
       </tr>`);
         ingredientTable.append(newRow)
-
+        $('[data-toggle="tooltip"]').tooltip()
     }
 
 
@@ -820,6 +826,9 @@ $(document).ready(function () {
         hideLoader()
     }
 
+    function showHelpModal(){
+        $(`#helpModal`).modal();
+    }
 
     function populatePickers(field, rowId, ingredient) {
         $(`#ingredientMatch${field}`).removeClass("hide-picker")
@@ -840,11 +849,18 @@ $(document).ready(function () {
         calcRecipe();
 
     })
+    $("#hideHelp").on("click", event => {
+        localStorage.setItem("showHelp", false)
+    })
 
+    $("#help").on("click", event => {
+        showHelpModal();
+    })
 
     $("#addRow").on("click", event => {
         addRow();
     })
+    $('[data-toggle="tooltip"]').tooltip()
 
 
 
@@ -853,7 +869,11 @@ $(document).ready(function () {
 
     loadIngredients(initialLoad);
     showLanguage();
-
+    const showHelp = localStorage.getItem("showHelp") || true;
+    if(showHelp !== "false"){
+        showHelpModal();
+    }
+    
 
 
 

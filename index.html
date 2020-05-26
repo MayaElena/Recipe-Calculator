@@ -41,13 +41,16 @@
           <table class="table-striped" id="ingredientTable">
             <tr>
               <th id="ingredientHeader">
-                <h5 id="ingredientHeaderText" class="text-azurite"></h5>
+                <h5 id="ingredientHeaderText" data-toggle="tooltip" data-placement="left"
+                  title="Column for Ingredient Name" class="text-azurite"></h5>
               </th>
               <th id="ingredientQuantityHeader">
-                <h5 id="ingredientQuantityHeaderText" class="text-azurite"></h5>
+                <h5 id="ingredientQuantityHeaderText" data-toggle="tooltip" data-placement="left"
+                  title="Column for Ingredient Quantity" class="text-azurite"></h5>
               </th>
               <th id="ingredientQuantityUnit">
-                <h5 id="ingredientQuantityUnitText" class="text-azurite"></h5>
+                <h5 id="ingredientQuantityUnitText" data-toggle="tooltip" data-placement="left"
+                  title="Column for Ingredient Unit of Measure" class="text-azurite"></h5>
               </th>
               <th id="ingredientDelete">
 
@@ -62,7 +65,8 @@
           <div class="panel-body">
             <div class="row">
               <h4 id="recipePanelHeading" style="margin-left:15px;"></h4>
-              <div class="btn-group" role="group" aria-label="Recipe Tools">
+              <div class="btn-group" role="group" aria-label="Recipe Tools" data-toggle="tooltip" data-placement="left"
+                title="Click Here to add another ingredient or calculate the total recipe!">
                 <div class="col-md-6 button-col mx-auto">
                   <button class="btn btn-default" id="addRow"></button>
                 </div>
@@ -75,12 +79,25 @@
 
             <div class="row">
               <h4 id="languagePanelHeading" style="margin-left:15px;"></h4>
-              <div class="btn-group" role="group" aria-label="Language Selector">
+              <div class="btn-group" role="group" aria-label="Language Selector" data-toggle="tooltip"
+                data-placement="left"
+                title="Click Here to Change Language to English /Haga Clic Aquí para Cambiar el Idioma al Español">
                 <div class="col-md-6 button-col mx-auto">
                   <button class="btn btn-default" id="english">English</button>
                 </div>
                 <div class="col-md-6 button-col mx-auto">
                   <button class="btn btn-default" id="spanish">Español</button>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="row">
+              <h4 id="helpPanelHeading" style="margin-left:15px;"></h4>
+              <div class="btn-group" role="group" aria-label="Help" data-toggle="tooltip" data-placement="left"
+                title="Click Here to add to show help page.">
+                <div class="col-md-6 button-col mx-auto">
+                  <button aria-label="Pop Open Help Modal" class="btn btn-default" id="help">Full Help</button>
                 </div>
               </div>
             </div>
@@ -481,7 +498,89 @@
       </div>
     </div>
 
+    <div id="helpModal" class="modal fade">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i aria-hidden="true"
+                class="ua-brand-x"></i></button>
+            <h3 class="modal-title">Welcome to the UArizona Garden Kitchen Nutritional Calculator!</h3>
+          </div>
+          <div class="modal-body">
+  
+              <p>
+                Whether this is your first time here, or you've clicked the help button, let us explain how the
+                Nutritional Calculator works!
+              </p>
+              <h3>Basics</h3>
+              <div>
+                <p>
+                  This nutritional calculator takes in your ingredients, and calculates the calories and essential
+                  nutritional information for your needs against the FDA Daily Values.
+                </p>
+              </div>
+              <h3>
+                How To Use
+              </h3>
+              <div>
+                <p>
+                  First, please wait for the application to load. This will look like a red spinner over the center of
+                  the page, and the ingredients input will be greyed out.
+                </p>
+              </div>
+              <br>
+              <div>
+                <p>Once the spinner has vanished, please proceed!</p>
+              </div>
+              <br>
+              <div>
+                <p>Next, you will notice the table has three options, 'Ingredient', 'Quantity', and 'Unit.' At first,
+                  only 'Ingredient' will be inputtable. This is on purpose, so that we can find you the write units of
+                  measurement and nutritional information</p>
+              </div>
+              <br>
+              <div>
+                <p>Now, input an ingredient into the 'ingredient' column and hit 'Enter' on your keyboard, or click off
+                  of the input. If we have seen this ingredient before, we will automatically load it. If we haven't,
+                  that's okay too! If it's unknown to use, we will display a modal popup with a few options:</p>
+              </div>
 
+              <ul>
+                <li><strong>Fuzzy Logic Match:</strong> If the input wasn't easily recognized or fragmentary, we will
+                  try to match it with our natural language processing.</li>
+                <li><strong>Misspelling Match:</strong> If the input was misspelled, we will try to match it with our
+                  learned ingredients</li>
+                <li><strong>Load New Ingredient:</strong> If the input wasn't recognized, we will use our API's ability
+                  to learn and search new ingredients to add it to our database!</li>
+              </ul>
+              <br>
+              <p>Now you can input the units of measurement, i.e. cups, ozs, etc. and the quantity as well</p>
+              <br>
+              <p>Add more ingredients with the 'Add Ingredient to Recipe' button in tools, and once you are happy with your recipe, click 'Calculate Recipe'</p>
+              <h3>Warnings</h3>
+              <p>
+                This calculator comes with a series of warnings if it detects something wrong:
+              </p>
+              <h4>Daily Value</h4>
+              <p>Should any of the daily values (Calories, Fat, etc) be exceeded per serving, the calculator will warn
+                you, and display a red tooltip on the side of the nutritional facts</p>
+              <h4>Ingredients</h4>
+              <p>If an ingredient is found that is exceedingly high in those daily values, or represents a tremendous
+                amount of those daily values as a percentage, it will be flagged in the ingredients table as well</p>
+              <h4>Garden Kitchen Recommendations</h4>
+              <p>Additionally, the UArizona Garden Kitchen recommends a healthy diet, and if any of the Garden Kitchen's
+                Recommendations are exceeded, a pop up will display with which recommendations have been exceeded. </p>
+              <h3>Help</h3>
+              <p>If you need this information to display again, click the 'Show Help' button in the Tools</p>
+      
+          </div>
+          <div class="modal-footer">
+            <button id="hideHelp" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+          </div>
+        </div>
+      </div>
+    </div>
 
 
 
