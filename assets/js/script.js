@@ -616,6 +616,11 @@ $(document).ready(function () {
             showErrorModal();
         }
 
+        if(Number(finalCalc.sugars) * 4 >= (finalCalc.calories * .15)){
+            $("#sugarError").removeClass("hide-error");
+            showErrorModal();
+        }
+
     }
 
     function generateNutrientWarningMessage(problem, valueName, value, valueThreshold) {
