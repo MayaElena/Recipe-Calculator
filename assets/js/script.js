@@ -6,13 +6,12 @@ $(document).ready(function () {
     let count = 0;
     const ingredients = {};
     let setLanguage = "english";
-    const BASE_URL = "https://agile-shore-16925.herokuapp.com/"
-
-
+    //const BASE_URL = "https://agile-shore-16925.herokuapp.com/"
+    const BASE_URL = "http://localhost:3000/";
 
     const languages = {
         english: {
-            title: "UArizona Garden Kitchen Nutritional Calculator",
+            title: "UArizona Cooperative Extension Nutritional Calculator",
             ingredient: "Ingredient",
             quantity: "Qty.",
             unit: "Unit",
@@ -57,7 +56,7 @@ $(document).ready(function () {
             caloriesPerGram: "Calories Per Gram",
             caloriesPerGramLabel: "Fat 9 &bull; Carbohydrate 4 &bull; Protein 4",
             help: "Show Help",
-            helpPanelHeading: "Help"
+            helpPanelHeading: "Help",
         },
         spanish: {
             measures: {
@@ -82,7 +81,7 @@ $(document).ready(function () {
                 tsp: "cucharadita",
                 tbsp: "cucharada",
                 oz: "onza",
-                lb: "libra"
+                lb: "libra",
             },
             title: "Calculadora Nutricional de Cocina de Jardín de UArizona",
             ingredient: "Ingrediente",
@@ -130,34 +129,33 @@ $(document).ready(function () {
             caloriesPerGram: "Calorías por Gramo",
             caloriesPerGramLabel: "Grasa 9 &bull; Carbohidrato 4 &bull; Proteín 4",
             help: "Mostrar Ayuda",
-            helpPanelHeading: "Ayuda"
+            helpPanelHeading: "Ayuda",
         },
-    }
-
+    };
 
     function loadIngredients(cb) {
-        showLoader()
+        showLoader();
         $.ajax({
             method: "GET",
-            url: BASE_URL + "api/ingredients"
-        }).then(ingredientsData => {
-            ingredientsData.forEach(ingredient => {
-                ingredients[ingredient.fullname] = ingredient
-            })
+            url: BASE_URL + "api/ingredients",
+        }).then((ingredientsData) => {
+            ingredientsData.forEach((ingredient) => {
+                ingredients[ingredient.fullname] = ingredient;
+            });
             //console.log(ingredients)
             fuzzy = FuzzySet(getIngredientKeys(), true, 1, 2);
 
             cb();
-        })
+        });
     }
 
     function showLanguage() {
-        $(`.unit`).val('')
-        $(`.language-unit-option`).attr('hidden', true)
+        $(`.unit`).val("");
+        $(`.language-unit-option`).attr("hidden", true);
         $(`.${setLanguage}-option`).attr("hidden", false);
 
-        let language = languages[setLanguage]
-        $("#titleText").html(language.title)
+        let language = languages[setLanguage];
+        $("#titleText").html(language.title);
         $("#ingredientHeaderText").text(language.ingredient);
         $("#ingredientQuantityHeaderText").text(language.quantity);
         $("#ingredientQuantityUnitText").text(language.unit);
@@ -175,7 +173,6 @@ $(document).ready(function () {
         $("#nutrition-facts__calories_text").text(language.calories);
         $("#nutrition-facts__fat_calories_text").text(language.caloriesFromFat);
 
-
         $("#nutrition-facts__daily_value_text").text(language.dailyValue);
         $("#nutrition-facts__total_fat_text").text(language.totalFat);
         $("#nutrition-facts__sat_fat_text").text(language.satFat);
@@ -189,15 +186,12 @@ $(document).ready(function () {
         $("#nutrition-facts__fiber_text").text(language.dietaryFiber);
         $("#nutrition-facts__proteins_text").text(language.proteins);
 
-
-
         $("#nutrition-facts___vitamin_A_text").text(language.vitamin_a);
         $("#nutrition-facts___vitamin_B_6_text").text(language.vitamin_b_6);
         $("#nutrition-facts___vitamin_B_12_text").text(language.vitamin_b_12);
         $("#nutrition-facts___vitamin_C_text").text(language.vitamin_c);
         $("#nutrition-facts___vitamin_D_text").text(language.vitamin_d);
         $("#nutrition-facts___vitamin_K_text").text(language.vitamin_k);
-
 
         $("#nutrition-facts___folic_acid_text").text(language.folic_acid);
         $("#nutrition-facts___iron_text").text(language.iron);
@@ -208,7 +202,6 @@ $(document).ready(function () {
         $("#nutrition-facts___total_folate_text").text(language.total_folate);
         $("#nutrition-facts___zinc_text").text(language.zinc);
 
-
         $("#dv-disclaimer").text(language.disclaimer);
         $("#nutrition-facts___calories_text").text(language.calories);
         $("#nutrition-facts___total_fat_text").text(language.totalFat);
@@ -217,7 +210,6 @@ $(document).ready(function () {
         $("#nutrition-facts___sodium_text").text(language.sodium);
         $("#nutrition-facts___carbs_text").text(language.totalCarb);
         $("#nutrition-facts___fiber_text").text(language.fiber);
-
 
         $("#nutrition-facts___less_than").text(language.lessThan);
         $("#nutrition-facts___fiber_text").text(language.dietaryFiber);
@@ -228,32 +220,38 @@ $(document).ready(function () {
         $("#help").text(language.help);
     }
 
-
     /**
      * Calculate the entire recipe
      */
     async function calcRecipe() {
-        resetErrorModal()
+        resetErrorModal();
         const rows = $(".ingredientRow");
         //console.log(rows);
         const configuredData = [];
         rows.map((index, row) => {
             //console.log(row)
-            let id = $(row).attr("data-id")
+            let id = $(row).attr("data-id");
             //console.log(id)
             let data = {
                 ingredient: ingredients[$(`#row-${id}-ingredient`).val()],
                 amount: $(`#row-${id}-quantity`).val(),
                 conversion: $(`#row-${id}-unit`).val(),
-                id: id
+                id: id,
+            };
+            if (
+                data.ingredient !== "" &&
+                data.ingredient !== undefined &&
+                data.ingredient !== null &&
+                data.amount !== "" &&
+                data.amount !== undefined &&
+                data.amount !== null &&
+                data.conversion !== "" &&
+                data.conversion !== undefined &&
+                data.conversion !== null
+            ) {
+                configuredData.push(data);
             }
-            if (data.ingredient !== "" && data.ingredient !== undefined && data.ingredient !== null &&
-                data.amount !== "" && data.amount !== undefined && data.amount !== null &&
-                data.conversion !== "" && data.conversion !== undefined && data.conversion !== null) {
-                configuredData.push(data)
-            }
-
-        })
+        });
         //console.log(configuredData);
         // allData
         const servings = parseInt($("#nutrition-facts__serving_per").val());
@@ -284,18 +282,44 @@ $(document).ready(function () {
             vitamin_k: 0,
             vitamin_d: 0,
             zinc: 0,
-            total_weight: 0
-        }
+            total_weight: 0,
+        };
 
-
-        configuredData.forEach(datapoint => {
-
-            let conversionFactor = datapoint.amount * (datapoint.conversion / datapoint.ingredient.servingSize)
+        configuredData.forEach((datapoint) => {
+            let conversionFactor =
+                datapoint.amount *
+                (datapoint.conversion / datapoint.ingredient.servingSize);
             if (datapoint.conversion == 100) {
                 conversionFactor = conversionFactor / 100;
             }
             //console.log(conversionFactor, datapoint)
-            const { calories, cholesterol, dietary_fiber, folic_acid, fructose, iron, added_sugars, magnesium, manganese, niacin, potassium, protein, saturated_fat, sodium, sugars, total_carbohydrates, total_fat, total_folate, vitamin_a, vitamin_b_6, vitamin_b_12, vitamin_c, vitamin_d, vitamin_k, zinc } = datapoint.ingredient.nutrients
+            const {
+                calories,
+                cholesterol,
+                dietary_fiber,
+                folic_acid,
+                fructose,
+                iron,
+                added_sugars,
+                magnesium,
+                manganese,
+                niacin,
+                potassium,
+                protein,
+                saturated_fat,
+                sodium,
+                sugars,
+                total_carbohydrates,
+                total_fat,
+                total_folate,
+                vitamin_a,
+                vitamin_b_6,
+                vitamin_b_12,
+                vitamin_c,
+                vitamin_d,
+                vitamin_k,
+                zinc,
+            } = datapoint.ingredient.nutrients;
             finalCalc.calories += calories * conversionFactor;
             finalCalc.total_fat += total_fat * conversionFactor;
             finalCalc.saturated_fat += saturated_fat * conversionFactor;
@@ -322,30 +346,44 @@ $(document).ready(function () {
             finalCalc.vitamin_k += vitamin_k * conversionFactor;
             finalCalc.zinc += zinc * conversionFactor;
 
-            finalCalc.total_weight += (datapoint.ingredient.servingSize * conversionFactor)
-        })
+            finalCalc.total_weight +=
+                datapoint.ingredient.servingSize * conversionFactor;
+        });
 
-
-        finalCalc.calories_from_fat = finalCalc.total_fat * 9
+        finalCalc.calories_from_fat = finalCalc.total_fat * 9;
 
         for (const key in finalCalc) {
-            finalCalc[key] = finalCalc[key] / servings
+            finalCalc[key] = finalCalc[key] / servings;
         }
 
+        $("#nutrition-facts__calories").text(Number(finalCalc.calories).toFixed(0));
+        $("#nutrition-facts__serving_size").text(
+            Number(finalCalc.total_weight).toFixed(0)
+        );
+        $("#nutrition-facts__fat_calories").text(
+            Number(finalCalc.total_fat * 9).toFixed(0)
+        );
 
-        $("#nutrition-facts__calories").text(Number(finalCalc.calories).toFixed(0))
-        $("#nutrition-facts__serving_size").text(Number(finalCalc.total_weight).toFixed(0))
-        $("#nutrition-facts__fat_calories").text(Number(finalCalc.total_fat * 9).toFixed(0))
-
-
-        $("#nutrition-facts__total_fat").text(Number(finalCalc.total_fat).toFixed(1))
-        $("#nutrition-facts__sat_fat").text(Number(finalCalc.saturated_fat).toFixed(1))
-        $("#nutrition-facts__cholesterol").text(Number(finalCalc.cholesterol).toFixed(2))
+        $("#nutrition-facts__total_fat").text(
+            Number(finalCalc.total_fat).toFixed(1)
+        );
+        $("#nutrition-facts__sat_fat").text(
+            Number(finalCalc.saturated_fat).toFixed(1)
+        );
+        $("#nutrition-facts__cholesterol").text(
+            Number(finalCalc.cholesterol).toFixed(2)
+        );
         $("#nutrition-facts__sodium").text(Number(finalCalc.sodium).toFixed(0));
-        $("#nutrition-facts__total_carb").text(Number(finalCalc.total_carbohydrates).toFixed(1));
-        $("#nutrition-facts__fiber").text(Number(finalCalc.dietary_fiber).toFixed(0));
+        $("#nutrition-facts__total_carb").text(
+            Number(finalCalc.total_carbohydrates).toFixed(1)
+        );
+        $("#nutrition-facts__fiber").text(
+            Number(finalCalc.dietary_fiber).toFixed(0)
+        );
         $("#nutrition-facts__sugars").text(Number(finalCalc.sugars).toFixed(1));
-        $("#nutrition-facts__added_sugars").text(Number(finalCalc.added_sugars).toFixed(1));
+        $("#nutrition-facts__added_sugars").text(
+            Number(finalCalc.added_sugars).toFixed(1)
+        );
         $("#nutrition-facts__proteins").text(Number(finalCalc.protein).toFixed(1));
 
         let is2000 = true;
@@ -374,265 +412,364 @@ $(document).ready(function () {
                 vitamin_e: 15,
                 vitamin_k: 120,
                 zinc: 11,
-
-            }
+            };
         }
 
-        let totalcaloriesDV = Number(finalCalc.calories) / DVs.total_calories * 100;
-        let totalFatDV = Number(finalCalc.total_fat) / DVs.total_fat * 100;
-        let satFatDV = Number(finalCalc.saturated_fat) / DVs.saturated_fat * 100;
-        let cholDV = Number(finalCalc.cholesterol) / DVs.cholesterol * 100;
-        let sodiumDV = Number(finalCalc.sodium) / DVs.sodium * 100;
-        let totalCarbDV = Number(finalCalc.total_carbohydrates) / DVs.total_carbohydrates * 100;
-        let dietaryFiberDV = Number(finalCalc.dietary_fiber) / DVs.dietary_fiber * 100;
+        let totalcaloriesDV =
+            (Number(finalCalc.calories) / DVs.total_calories) * 100;
+        let totalFatDV = (Number(finalCalc.total_fat) / DVs.total_fat) * 100;
+        let satFatDV = (Number(finalCalc.saturated_fat) / DVs.saturated_fat) * 100;
+        let cholDV = (Number(finalCalc.cholesterol) / DVs.cholesterol) * 100;
+        let sodiumDV = (Number(finalCalc.sodium) / DVs.sodium) * 100;
+        let totalCarbDV =
+            (Number(finalCalc.total_carbohydrates) / DVs.total_carbohydrates) * 100;
+        let dietaryFiberDV =
+            (Number(finalCalc.dietary_fiber) / DVs.dietary_fiber) * 100;
 
         //console.log(totalFatDV)
 
         $(".dv_warning").empty();
 
         if (totalcaloriesDV > WARNING_DV_THRESHOLD) {
-            $("#nutrition-facts__fat_calories").append($(`<span class='dv_warning'>Total Calories are over the recommended daily value!</span>`))
+            $("#nutrition-facts__fat_calories").append(
+                $(
+                    `<span class='dv_warning'>Total Calories are over the recommended daily value!</span>`
+                )
+            );
         }
 
-
-        $("#nutrition-facts__total_fat_percent").text(totalFatDV.toFixed(0))
+        $("#nutrition-facts__total_fat_percent").text(totalFatDV.toFixed(0));
         if (totalFatDV > WARNING_DV_THRESHOLD) {
-            $("#nutrition-facts__total_fat_percent").append($(`<span class='dv_warning'>Total Fat is over the recommended daily value!</span>`))
+            $("#nutrition-facts__total_fat_percent").append(
+                $(
+                    `<span class='dv_warning'>Total Fat is over the recommended daily value!</span>`
+                )
+            );
         }
-        $("#nutrition-facts__sat_fat_percent").text(satFatDV.toFixed(0))
+        $("#nutrition-facts__sat_fat_percent").text(satFatDV.toFixed(0));
         if (satFatDV > WARNING_DV_THRESHOLD) {
-            $("#nutrition-facts__sat_fat_percent").prepend($(`<span class='dv_warning'>Saturated Fat is over the recommended daily value!</span>`))
+            $("#nutrition-facts__sat_fat_percent").prepend(
+                $(
+                    `<span class='dv_warning'>Saturated Fat is over the recommended daily value!</span>`
+                )
+            );
         }
-        $("#nutrition-facts__cholesterol_percent").text(cholDV.toFixed(0))
+        $("#nutrition-facts__cholesterol_percent").text(cholDV.toFixed(0));
         if (cholDV > WARNING_DV_THRESHOLD) {
-            $("#nutrition-facts__cholesterol_percent").append($(`<span class='dv_warning'>Cholesterol is over the recommended daily value!</span>`))
+            $("#nutrition-facts__cholesterol_percent").append(
+                $(
+                    `<span class='dv_warning'>Cholesterol is over the recommended daily value!</span>`
+                )
+            );
         }
-        $("#nutrition-facts__sodium_percent").text(sodiumDV.toFixed(0))
+        $("#nutrition-facts__sodium_percent").text(sodiumDV.toFixed(0));
         if (sodiumDV > WARNING_DV_THRESHOLD) {
-            $("#nutrition-facts__sodium_percent").append($(`<span class='dv_warning'>Sodium is over the recommended daily value!</span>`))
+            $("#nutrition-facts__sodium_percent").append(
+                $(
+                    `<span class='dv_warning'>Sodium is over the recommended daily value!</span>`
+                )
+            );
         }
-        $("#nutrition-facts__total_carb_percent").text(totalCarbDV.toFixed(0))
+        $("#nutrition-facts__total_carb_percent").text(totalCarbDV.toFixed(0));
         if (totalCarbDV > WARNING_DV_THRESHOLD) {
-            $("#nutrition-facts__total_carb_percent").append($(`<span class='dv_warning'>Total Carbs are over the recommended daily value!</span>`))
+            $("#nutrition-facts__total_carb_percent").append(
+                $(
+                    `<span class='dv_warning'>Total Carbs are over the recommended daily value!</span>`
+                )
+            );
         }
-        $("#nutrition-facts__fiber_percent").text(dietaryFiberDV.toFixed(0))
+        $("#nutrition-facts__fiber_percent").text(dietaryFiberDV.toFixed(0));
         if (dietaryFiberDV > WARNING_DV_THRESHOLD) {
-            $("#nutrition-facts__fiber_percent").append($(`<span class='dv_warning'>Fiber is over the recommended daily value!</span>`))
+            $("#nutrition-facts__fiber_percent").append(
+                $(
+                    `<span class='dv_warning'>Fiber is over the recommended daily value!</span>`
+                )
+            );
         }
         $(".error").empty();
 
         if (totalFatDV > WARNING_DV_THRESHOLD) {
-            let problems = configuredData.map(datapoint => {
-                let conversionFactor = datapoint.amount * (datapoint.conversion / datapoint.ingredient.servingSize)
-                if (datapoint.conversion == 100) {
-                    conversionFactor = conversionFactor / 100;
-                }
-                return {
-                    fat: datapoint.ingredient.nutrients.total_fat * conversionFactor,
-                    name: datapoint.ingredient.fullname,
-                    id: datapoint.id
-                }
-            }).sort((a, b) => b.fat - a.fat)
+            let problems = configuredData
+                .map((datapoint) => {
+                    let conversionFactor =
+                        datapoint.amount *
+                        (datapoint.conversion / datapoint.ingredient.servingSize);
+                    if (datapoint.conversion == 100) {
+                        conversionFactor = conversionFactor / 100;
+                    }
+                    return {
+                        fat: datapoint.ingredient.nutrients.total_fat * conversionFactor,
+                        name: datapoint.ingredient.fullname,
+                        id: datapoint.id,
+                    };
+                })
+                .sort((a, b) => b.fat - a.fat);
             //console.log(problems)
-            let erroredProblems = []
+            let erroredProblems = [];
             problems.forEach((problem, index) => {
                 if (index < 2 && erroredProblems.indexOf(problem.fullname) == -1) {
-                    $(`#row-${problem.id}`).after(generateNutrientWarningMessage(problem.name, "total fat", totalFatDV, ERROR_DV_THRESHOLD))
+                    $(`#row-${problem.id}`).after(
+                        generateNutrientWarningMessage(
+                            problem.name,
+                            "total fat",
+                            totalFatDV,
+                            ERROR_DV_THRESHOLD
+                        )
+                    );
                 }
-                erroredProblems.push(problem.fullname)
-            })
-
+                erroredProblems.push(problem.fullname);
+            });
         }
 
         if (satFatDV > WARNING_DV_THRESHOLD) {
-            let problems = configuredData.map(datapoint => {
-                let conversionFactor = datapoint.amount * (datapoint.conversion / datapoint.ingredient.servingSize)
-                if (datapoint.conversion == 100) {
-                    conversionFactor = conversionFactor / 100;
-                }
-                return {
-                    satfat: datapoint.ingredient.nutrients.saturated_fat * conversionFactor,
-                    name: datapoint.ingredient.fullname,
-                    id: datapoint.id
-                }
-            }).sort((a, b) => b.satfat - a.satfat)
+            let problems = configuredData
+                .map((datapoint) => {
+                    let conversionFactor =
+                        datapoint.amount *
+                        (datapoint.conversion / datapoint.ingredient.servingSize);
+                    if (datapoint.conversion == 100) {
+                        conversionFactor = conversionFactor / 100;
+                    }
+                    return {
+                        satfat:
+                            datapoint.ingredient.nutrients.saturated_fat * conversionFactor,
+                        name: datapoint.ingredient.fullname,
+                        id: datapoint.id,
+                    };
+                })
+                .sort((a, b) => b.satfat - a.satfat);
             //console.log(problems)
-            let erroredProblems = []
+            let erroredProblems = [];
             problems.forEach((problem, index) => {
                 if (index < 2 && erroredProblems.indexOf(problem.fullname) == -1) {
-                    $(`#row-${problem.id}`).after(generateNutrientWarningMessage(problem.name, "saturated fat", satFatDV, ERROR_DV_THRESHOLD))
+                    $(`#row-${problem.id}`).after(
+                        generateNutrientWarningMessage(
+                            problem.name,
+                            "saturated fat",
+                            satFatDV,
+                            ERROR_DV_THRESHOLD
+                        )
+                    );
                 }
-                erroredProblems.push(problem.fullname)
-            })
-
+                erroredProblems.push(problem.fullname);
+            });
         }
 
         if (cholDV > WARNING_DV_THRESHOLD) {
-            let problems = configuredData.map(datapoint => {
-                let conversionFactor = datapoint.amount * (datapoint.conversion / datapoint.ingredient.servingSize)
-                if (datapoint.conversion == 100) {
-                    conversionFactor = conversionFactor / 100;
-                }
-                return {
-                    chol: datapoint.ingredient.nutrients.cholesterol * conversionFactor,
-                    name: datapoint.ingredient.fullname,
-                    id: datapoint.id
-                }
-            }).sort((a, b) => b.chol - a.chol)
+            let problems = configuredData
+                .map((datapoint) => {
+                    let conversionFactor =
+                        datapoint.amount *
+                        (datapoint.conversion / datapoint.ingredient.servingSize);
+                    if (datapoint.conversion == 100) {
+                        conversionFactor = conversionFactor / 100;
+                    }
+                    return {
+                        chol: datapoint.ingredient.nutrients.cholesterol * conversionFactor,
+                        name: datapoint.ingredient.fullname,
+                        id: datapoint.id,
+                    };
+                })
+                .sort((a, b) => b.chol - a.chol);
             //console.log(problems)
-            let erroredProblems = []
+            let erroredProblems = [];
             problems.forEach((problem, index) => {
                 if (index < 2 && erroredProblems.indexOf(problem.fullname) == -1) {
-                    $(`#row-${problem.id}`).after(generateNutrientWarningMessage(problem.name, "cholesterol", cholDV, ERROR_DV_THRESHOLD))
+                    $(`#row-${problem.id}`).after(
+                        generateNutrientWarningMessage(
+                            problem.name,
+                            "cholesterol",
+                            cholDV,
+                            ERROR_DV_THRESHOLD
+                        )
+                    );
                 }
-                erroredProblems.push(problem.fullname)
-            })
-
+                erroredProblems.push(problem.fullname);
+            });
         }
 
         if (sodiumDV > WARNING_DV_THRESHOLD) {
-            let problems = configuredData.map(datapoint => {
-                let conversionFactor = datapoint.amount * (datapoint.conversion / datapoint.ingredient.servingSize)
-                if (datapoint.conversion == 100) {
-                    conversionFactor = conversionFactor / 100;
-                }
-                return {
-                    sodium: datapoint.ingredient.nutrients.sodium * conversionFactor,
-                    name: datapoint.ingredient.fullname,
-                    id: datapoint.id
-                }
-            }).sort((a, b) => b.sodium - a.sodium)
+            let problems = configuredData
+                .map((datapoint) => {
+                    let conversionFactor =
+                        datapoint.amount *
+                        (datapoint.conversion / datapoint.ingredient.servingSize);
+                    if (datapoint.conversion == 100) {
+                        conversionFactor = conversionFactor / 100;
+                    }
+                    return {
+                        sodium: datapoint.ingredient.nutrients.sodium * conversionFactor,
+                        name: datapoint.ingredient.fullname,
+                        id: datapoint.id,
+                    };
+                })
+                .sort((a, b) => b.sodium - a.sodium);
             //console.log(problems)
-            let erroredProblems = []
+            let erroredProblems = [];
             problems.forEach((problem, index) => {
                 if (index < 2 && erroredProblems.indexOf(problem.fullname) == -1) {
-                    $(`#row-${problem.id}`).after(generateNutrientWarningMessage(problem.name, "sodium", sodiumDV, ERROR_DV_THRESHOLD))
+                    $(`#row-${problem.id}`).after(
+                        generateNutrientWarningMessage(
+                            problem.name,
+                            "sodium",
+                            sodiumDV,
+                            ERROR_DV_THRESHOLD
+                        )
+                    );
                 }
-                erroredProblems.push(problem.fullname)
-            })
-
+                erroredProblems.push(problem.fullname);
+            });
         }
 
         if (totalCarbDV > WARNING_DV_THRESHOLD) {
-            let problems = configuredData.map(datapoint => {
-                let conversionFactor = datapoint.amount * (datapoint.conversion / datapoint.ingredient.servingSize)
-                if (datapoint.conversion == 100) {
-                    conversionFactor = conversionFactor / 100;
-                }
-                return {
-                    carbs: datapoint.ingredient.nutrients.total_carbohydrates * conversionFactor,
-                    name: datapoint.ingredient.fullname,
-                    id: datapoint.id
-                }
-            }).sort((a, b) => b.carbs - a.carbs)
+            let problems = configuredData
+                .map((datapoint) => {
+                    let conversionFactor =
+                        datapoint.amount *
+                        (datapoint.conversion / datapoint.ingredient.servingSize);
+                    if (datapoint.conversion == 100) {
+                        conversionFactor = conversionFactor / 100;
+                    }
+                    return {
+                        carbs:
+                            datapoint.ingredient.nutrients.total_carbohydrates *
+                            conversionFactor,
+                        name: datapoint.ingredient.fullname,
+                        id: datapoint.id,
+                    };
+                })
+                .sort((a, b) => b.carbs - a.carbs);
             //console.log(problems)
-            let erroredProblems = []
+            let erroredProblems = [];
             problems.forEach((problem, index) => {
                 if (index < 2 && erroredProblems.indexOf(problem.fullname) == -1) {
-                    $(`#row-${problem.id}`).after(generateNutrientWarningMessage(problem.name, "carbohydrates", totalCarbDV, ERROR_DV_THRESHOLD))
+                    $(`#row-${problem.id}`).after(
+                        generateNutrientWarningMessage(
+                            problem.name,
+                            "carbohydrates",
+                            totalCarbDV,
+                            ERROR_DV_THRESHOLD
+                        )
+                    );
                 }
-                erroredProblems.push(problem.fullname)
-            })
-
+                erroredProblems.push(problem.fullname);
+            });
         }
 
         if (dietaryFiberDV > WARNING_DV_THRESHOLD) {
-            let problems = configuredData.map(datapoint => {
-                let conversionFactor = datapoint.amount * (datapoint.conversion / datapoint.ingredient.servingSize)
-                if (datapoint.conversion == 100) {
-                    conversionFactor = conversionFactor / 100;
-                }
-                return {
-                    fiber: datapoint.ingredient.nutrients.dietary_fiber * conversionFactor,
-                    name: datapoint.ingredient.fullname,
-                    id: datapoint.id
-                }
-            }).sort((a, b) => b.fiber - a.fiber)
+            let problems = configuredData
+                .map((datapoint) => {
+                    let conversionFactor =
+                        datapoint.amount *
+                        (datapoint.conversion / datapoint.ingredient.servingSize);
+                    if (datapoint.conversion == 100) {
+                        conversionFactor = conversionFactor / 100;
+                    }
+                    return {
+                        fiber:
+                            datapoint.ingredient.nutrients.dietary_fiber * conversionFactor,
+                        name: datapoint.ingredient.fullname,
+                        id: datapoint.id,
+                    };
+                })
+                .sort((a, b) => b.fiber - a.fiber);
             //console.log(problems)
-            let erroredProblems = []
+            let erroredProblems = [];
             problems.forEach((problem, index) => {
                 if (index < 2 && erroredProblems.indexOf(problem.fullname) == -1) {
-                    $(`#row-${problem.id}`).after(generateNutrientWarningMessage(problem.name, "fiber", dietaryFiberDV, ERROR_DV_THRESHOLD))
+                    $(`#row-${problem.id}`).after(
+                        generateNutrientWarningMessage(
+                            problem.name,
+                            "fiber",
+                            dietaryFiberDV,
+                            ERROR_DV_THRESHOLD
+                        )
+                    );
                 }
-                erroredProblems.push(problem.fullname)
-            })
-
+                erroredProblems.push(problem.fullname);
+            });
         }
 
-        let vitaminADV = Number(finalCalc.vitamin_a) / DVs.vitamin_a * 100;
-        let vitamin_b_6DV = Number(finalCalc.vitamin_b_6) / DVs.vitamin_b_6 * 100;
-        let vitamin_b_12DV = Number(finalCalc.vitamin_b_12) / DVs.vitamin_b_12 * 100;
-        let vitamin_cDV = Number(finalCalc.vitamin_c) / DVs.vitamin_c * 100;
-        let vitamin_dDV = Number(finalCalc.vitamin_d) / DVs.vitamin_d * 100;
-        let vitamin_kDV = Number(finalCalc.vitamin_k) / DVs.vitamin_k * 100;
-        $("#nutrition-facts___vitamin_A").text(vitaminADV.toFixed(0))
-        $("#nutrition-facts___vitamin_B_6").text(vitamin_b_6DV.toFixed(0))
-        $("#nutrition-facts___vitamin_B_12").text(vitamin_b_12DV.toFixed(0))
-        $("#nutrition-facts___vitamin_C").text(vitamin_cDV.toFixed(0))
-        $("#nutrition-facts___vitamin_D").text(vitamin_dDV.toFixed(0))
-        $("#nutrition-facts___vitamin_K").text(vitamin_kDV.toFixed(0))
+        let vitaminADV = (Number(finalCalc.vitamin_a) / DVs.vitamin_a) * 100;
+        let vitamin_b_6DV = (Number(finalCalc.vitamin_b_6) / DVs.vitamin_b_6) * 100;
+        let vitamin_b_12DV =
+            (Number(finalCalc.vitamin_b_12) / DVs.vitamin_b_12) * 100;
+        let vitamin_cDV = (Number(finalCalc.vitamin_c) / DVs.vitamin_c) * 100;
+        let vitamin_dDV = (Number(finalCalc.vitamin_d) / DVs.vitamin_d) * 100;
+        let vitamin_kDV = (Number(finalCalc.vitamin_k) / DVs.vitamin_k) * 100;
+        $("#nutrition-facts___vitamin_A").text(vitaminADV.toFixed(0));
+        $("#nutrition-facts___vitamin_B_6").text(vitamin_b_6DV.toFixed(0));
+        $("#nutrition-facts___vitamin_B_12").text(vitamin_b_12DV.toFixed(0));
+        $("#nutrition-facts___vitamin_C").text(vitamin_cDV.toFixed(0));
+        $("#nutrition-facts___vitamin_D").text(vitamin_dDV.toFixed(0));
+        $("#nutrition-facts___vitamin_K").text(vitamin_kDV.toFixed(0));
 
+        let folic_acidADV = (Number(finalCalc.folic_acid) / DVs.folic_acid) * 100;
+        let ironDV = (Number(finalCalc.iron) / DVs.iron) * 100;
+        let magnesiumDV = (Number(finalCalc.magnesium) / DVs.magnesium) * 100;
+        let manganeseDV = (Number(finalCalc.manganese) / DVs.manganese) * 100;
+        let niacinDV = (Number(finalCalc.niacin) / DVs.niacin) * 100;
+        let potassiumDV = (Number(finalCalc.potassium) / DVs.potassium) * 100;
+        let total_folateDV =
+            (Number(finalCalc.total_folate) / DVs.total_folate) * 100;
+        let zincDV = (Number(finalCalc.zinc) / DVs.zinc) * 100;
+        $("#nutrition-facts___folic_acid").text(folic_acidADV.toFixed(0));
+        $("#nutrition-facts___iron").text(ironDV.toFixed(0));
+        $("#nutrition-facts___magnesium").text(magnesiumDV.toFixed(0));
+        $("#nutrition-facts___manganese").text(manganeseDV.toFixed(0));
+        $("#nutrition-facts___niacin").text(niacinDV.toFixed(0));
+        $("#nutrition-facts___potassium").text(potassiumDV.toFixed(0));
+        $("#nutrition-facts___total_folate").text(total_folateDV.toFixed(0));
+        $("#nutrition-facts___zinc").text(zincDV.toFixed(0));
 
-        let folic_acidADV = Number(finalCalc.folic_acid) / DVs.folic_acid * 100;
-        let ironDV = Number(finalCalc.iron) / DVs.iron * 100;
-        let magnesiumDV = Number(finalCalc.magnesium) / DVs.magnesium * 100;
-        let manganeseDV = Number(finalCalc.manganese) / DVs.manganese * 100;
-        let niacinDV = Number(finalCalc.niacin) / DVs.niacin * 100;
-        let potassiumDV = Number(finalCalc.potassium) / DVs.potassium * 100;
-        let total_folateDV = Number(finalCalc.total_folate) / DVs.total_folate * 100;
-        let zincDV = Number(finalCalc.zinc) / DVs.zinc * 100;
-        $("#nutrition-facts___folic_acid").text(folic_acidADV.toFixed(0))
-        $("#nutrition-facts___iron").text(ironDV.toFixed(0))
-        $("#nutrition-facts___magnesium").text(magnesiumDV.toFixed(0))
-        $("#nutrition-facts___manganese").text(manganeseDV.toFixed(0))
-        $("#nutrition-facts___niacin").text(niacinDV.toFixed(0))
-        $("#nutrition-facts___potassium").text(potassiumDV.toFixed(0))
-        $("#nutrition-facts___total_folate").text(total_folateDV.toFixed(0))
-        $("#nutrition-facts___zinc").text(zincDV.toFixed(0))
-
-
-        if((finalCalc.saturated_fat * 9 ) >= finalCalc.calories /10){
+        if (finalCalc.saturated_fat * 9 >= finalCalc.calories / 10) {
             $("#satFatError").removeClass("hide-error");
             showErrorModal();
         }
 
-        if(Number(finalCalc.trans_fat) >= .5){
+        if (Number(finalCalc.trans_fat) >= 0.5) {
             $("#transFatError").removeClass("hide-error");
             showErrorModal();
         }
 
-        if(Number(finalCalc.sodium) >= 480){
+        if (Number(finalCalc.sodium) >= 480) {
             $("#sodiumError").removeClass("hide-error");
             showErrorModal();
         }
 
-        if(Number(finalCalc.fiber)/finalCalc.calories >= .014){
+        if (Number(finalCalc.fiber) / finalCalc.calories >= 0.014) {
             $("#fiberError").removeClass("hide-error");
             showErrorModal();
         }
 
-        if(Number(finalCalc.added_sugars) * 4 >= (finalCalc.calories * .15)){
+        if (Number(finalCalc.added_sugars) * 4 >= finalCalc.calories * 0.15) {
             $("#sugarError").removeClass("hide-error");
             showErrorModal();
         }
 
-        if(Number(finalCalc.sugars) * 4 >= (finalCalc.calories * .15)){
+        if (Number(finalCalc.sugars) * 4 >= finalCalc.calories * 0.15) {
             $("#sugarError").removeClass("hide-error");
             showErrorModal();
         }
-
     }
 
-    function generateNutrientWarningMessage(problem, valueName, value, valueThreshold) {
-        return $(`<tr class='error'><td colspan="3" class="alert alert-dismissible alert-${value < valueThreshold ? 'warning' : 'danger'}">
+    function generateNutrientWarningMessage(
+        problem,
+        valueName,
+        value,
+        valueThreshold
+    ) {
+        return $(`<tr class='error'><td colspan="3" class="alert alert-dismissible alert-${
+            value < valueThreshold ? "warning" : "danger"
+            }">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true"><i class="ua-brand-x"></i></span></button>
-                    <h4><span class="text-capitalize">${problem}</span> is/are ${value < valueThreshold ? 'very' : 'extremely'} high in ${valueName}, part of a healthy diet is monitoring our ${valueName}! Consider a different ingredient or amount of <span class="text-capitalize">${problem}</span>.</h4>
+                    <h4><span class="text-capitalize">${problem}</span> is/are ${value < valueThreshold ? "very" : "extremely"} high in ${valueName}, part of a healthy diet is monitoring our ${valueName}! Consider a different ingredient or amount of <span class="text-capitalize">${problem}</span>.</h4>
 
-                  </td></tr>`)
+                  </td></tr>`);
     }
 
     function showLoader() {
-        $(".loader").css("display", "block")
+        $(".loader").css("display", "block");
     }
 
     function hideLoader() {
@@ -646,9 +783,11 @@ $(document).ready(function () {
         <td>
           <input type="text" list="ingredients-list" name="ingredient_name" class="ingredient_name form-control" id="row-${count}-ingredient" data-id="${count}" data-toggle="tooltip" data-placement="left" title="Ingredient #${count}"/>
           <datalist class="ingredients-list">
-            ${getIngredientKeys().sort().map((value, key) => {
-            return `<option value="${value}">${value}</option>`
-        })}
+            ${getIngredientKeys()
+                .sort()
+                .map((value, key) => {
+                    return `<option value="${value}">${value}</option>`;
+                })}
         </td>
         <td>
           <input type="number" step=.25 min=0 class="quantity form-control" id="row-${count}-quantity" data-id="${count}" data-toggle="tooltip" data-placement="left" title="Ingredient #${count} Quantity" disabled/>
@@ -660,119 +799,133 @@ $(document).ready(function () {
         <button type="button" class="btn btn-default delete_row" data-id="${count}" data-toggle="tooltip" data-placement="left" title="Delete Ingredient #${count}"><i class="btn-icon ua-brand-x">&nbsp;</i></button>
         </td>
       </tr>`);
-        ingredientTable.append(newRow)
-        $('[data-toggle="tooltip"]').tooltip()
+        ingredientTable.append(newRow);
+        $('[data-toggle="tooltip"]').tooltip();
     }
-
 
     function generateMeasure(measures, unitText) {
         let finalText = unitText;
         let translatedMeasures = Object.entries(measures);
         //console.log(translatedMeasures)
-        translatedMeasures.forEach(pair => {
+        translatedMeasures.forEach((pair) => {
             if (finalText.includes(pair[0])) {
-                finalText = finalText.replace(pair[0], pair[1])
+                finalText = finalText.replace(pair[0], pair[1]);
             }
-        })
+        });
         return finalText;
     }
 
     function clearAndDisableRow(id) {
-        $(`#row-${id}-quantity`).val("").attr("disabled", true)
-        $(`#row-${id}-unit`).val("").attr("disabled", true)
-        $(`.row-${id}-unit-option`).remove()
+        $(`#row-${id}-quantity`).val("").attr("disabled", true);
+        $(`#row-${id}-unit`).val("").attr("disabled", true);
+        $(`.row-${id}-unit-option`).remove();
     }
 
     function enableAndPopulateRow(id, ingredientName) {
-        $(`#row-${id}-quantity`).val("").attr("disabled", false)
-        $(`#row-${id}-unit`).val("").attr("disabled", false)
-        $(`.row-${id}-unit-option`).remove()
+        $(`#row-${id}-quantity`).val("").attr("disabled", false);
+        $(`#row-${id}-unit`).val("").attr("disabled", false);
+        $(`.row-${id}-unit-option`).remove();
         const ingredient = ingredients[ingredientName.toLowerCase()];
-        ingredient.measures.forEach(measure => {
-            $(`#row-${id}-unit`).append($(`<option class="row-${id}-unit-option english-option language-unit-option" ${setLanguage === "english" ? "" : "hidden"} value="${measure.conversion}">${measure.unit}</option>`))
-            $(`#row-${id}-unit`).append($(`<option class="row-${id}-unit-option spanish-option language-unit-option" ${setLanguage === "spanish" ? "" : "hidden"} value="${measure.conversion}">${generateMeasure(languages.spanish.measures, measure.unit)}</option>`))
-        })
+        ingredient.measures.forEach((measure) => {
+            $(`#row-${id}-unit`).append(
+                $(
+                    `<option class="row-${id}-unit-option english-option language-unit-option" ${
+                    setLanguage === "english" ? "" : "hidden"
+                    } value="${measure.conversion}">${measure.unit}</option>`
+                )
+            );
+            $(`#row-${id}-unit`).append(
+                $(
+                    `<option class="row-${id}-unit-option spanish-option language-unit-option" ${
+                    setLanguage === "spanish" ? "" : "hidden"
+                    } value="${measure.conversion}">${generateMeasure(
+                        languages.spanish.measures,
+                        measure.unit
+                    )}</option>`
+                )
+            );
+        });
     }
 
     function initialLoad() {
         addRow();
-        hideLoader()
+        hideLoader();
     }
-
-
 
     function getIngredientKeys() {
         return Object.keys(ingredients);
     }
 
     function getIngredients() {
-        return Object.entries(ingredients)
+        return Object.entries(ingredients);
     }
-
 
     function generateIngredientLists() {
         $("#ingredients-list").empty();
-        getIngredientKeys().sort().map((value, key) => {
-            $('#ingredients-list').append($(`<option value="${value}">${value}</option>`));
-        })
+        getIngredientKeys()
+            .sort()
+            .map((value, key) => {
+                $("#ingredients-list").append(
+                    $(`<option value="${value}">${value}</option>`)
+                );
+            });
     }
 
-
     $("#english").on("click", function (event) {
-
         setLanguage = "english";
-        showLanguage()
-    })
+        showLanguage();
+    });
 
     $("#spanish").on("click", function (event) {
-
-        setLanguage = "spanish"
-        showLanguage()
-    })
+        setLanguage = "spanish";
+        showLanguage();
+    });
 
     $(document).on("click", ".delete_row", function (event) {
         event.preventDefault();
-        const button = $(this)
+        const button = $(this);
         const rowId = button.attr("data-id");
         const row = $(`#row-${rowId}`);
         row.remove();
-    })
-
-
+    });
 
     $(document).on("change", ".ingredient_name", function (event) {
         showLoader();
-        const row = $(this)
+        const row = $(this);
         const rowId = row.attr("data-id");
-        const ingredientName = $(this).val()
+        const ingredientName = $(this).val();
         if (ingredientName === "") {
-            clearAndDisableRow(rowId)
-            let ingredientInput = document.getElementById(`row-${rowId}-ingredient`)
-            alert(`Row ${rowId}: No Ingredient Inputted, Please Enter an Ingredient`)
-            hideLoader()
-        }
-        else if (getIngredientKeys().find(element => element.toLowerCase() === ingredientName.toLowerCase())) {
-            enableAndPopulateRow(rowId, ingredientName)
-            hideLoader()
-        }
-        else if (ingredients[ingredientName] === null || ingredients[ingredientName] === undefined) {
-
-
-            let hardFind = getIngredientKeys().find(element => element.includes(ingredientName.toLowerCase()))
+            clearAndDisableRow(rowId);
+            let ingredientInput = document.getElementById(`row-${rowId}-ingredient`);
+            alert(`Row ${rowId}: No Ingredient Inputted, Please Enter an Ingredient`);
+            hideLoader();
+        } else if (
+            getIngredientKeys().find(
+                (element) => element.toLowerCase() === ingredientName.toLowerCase()
+            )
+        ) {
+            enableAndPopulateRow(rowId, ingredientName);
+            hideLoader();
+        } else if (
+            ingredients[ingredientName] === null ||
+            ingredients[ingredientName] === undefined
+        ) {
+            let hardFind = getIngredientKeys().find((element) =>
+                element.includes(ingredientName.toLowerCase())
+            );
             if (hardFind !== undefined) {
-                populatePickers("Error", rowId, hardFind)
+                populatePickers("Error", rowId, hardFind);
             }
             const found = fuzzy.get(ingredientName.toLowerCase());
             if (found && found.length > 0) {
                 let i = 0;
-                while(i < found.length){
-                    if(found[0][1] !== hardFind){
+                while (i < found.length) {
+                    if (found[0][1] !== hardFind) {
                         const newFind = found[0][1];
-                        populatePickers("Fuzzy", rowId, newFind)
+                        populatePickers("Fuzzy", rowId, newFind);
                         break;
-                    }
-                    else{
-                        i++
+                    } else {
+                        i++;
                     }
                 }
             }
@@ -780,14 +933,16 @@ $(document).ready(function () {
                 method: "POST",
                 url: BASE_URL + "api/generateFood",
                 data: {
-                    query: `1 ${ingredientName}`
+                    query: `1 ${ingredientName}`,
                 },
-                timeout: 5000
-            }).then((foods) => {
-                if (foods[0] && foods[0].fullname) {
-                    loadIngredients(generateIngredientLists)
-                    populatePickers("API", rowId, foods[0].fullname)
-                    showPickerModal()
+                timeout: 5000,
+            })
+                .then((foods) => {
+                    if (foods[0] && foods[0].fullname) {
+                        populatePickers("API", rowId, foods[0].fullname);
+                    }
+                    apiBrandedLoad(rowId, ingredientName);
+
                     // let id = rowId
                     // let foundFood = foods[0].fullname;
                     // if (useGenerated) {
@@ -797,101 +952,115 @@ $(document).ready(function () {
                     //         hideLoader()
                     //     }, 2000);
                     // }
-                }
-                else {
-                    clearAndDisableRow(rowId)
-                    showPickerModal()
-                }
-                //console.log(foods)
 
-            }).fail(err => {
-                clearAndDisableRow(rowId)
-                showPickerModal();
-            })
+                    //console.log(foods)
+                }).fail(({responseJSON}) => {
+                    if (responseJSON && responseJSON[0] && responseJSON[0].fullname) {
+                        populatePickers("API", rowId, responseJSON[0].fullname);
+                    }
+                    apiBrandedLoad(rowId, ingredientName);
 
-        }
-        else {
-            alert(`Row ${rowId}: An Unspecified Error Occurred! Sorry!`)
+                })
+        } else {
+            alert(`Row ${rowId}: An Unspecified Error Occurred! Sorry!`);
 
             //console.log(ingredientName)
         }
     });
 
-    function resetErrorModal(){
-        $(`.error-modal`).addClass("hide-error")
+    function apiBrandedLoad(rowId, ingredientName) {
+        $.ajax({
+            method: "POST",
+            url: BASE_URL + "api/generateBrandedFood",
+            data: {
+                query: `1 ${ingredientName}`,
+            },
+            timeout: 5000,
+        }).then((foods) => {
+            if (foods[0] && foods[0].fullname) {
+                populatePickers("Brand1", rowId, foods[0].fullname);
+            }
+            if (foods[1] && foods[1].fullname) {
+                populatePickers("Brand2", rowId, foods[1].fullname);
+            }
+            loadIngredients(generateIngredientLists);
+            showPickerModal();
+        }).fail(({responseJSON}) => {
+            if (responseJSON && responseJSON[0] && responseJSON[0].fullname) {
+                populatePickers("Brand1", rowId, responseJSON[0].fullname);
+            }
+            if (responseJSON && responseJSON[1] && responseJSON[1].fullname) {
+                populatePickers("Brand2", rowId, responseJSON[1].fullname);
+            }
+            loadIngredients(generateIngredientLists);
+            showPickerModal();
+        });
     }
 
-    function showErrorModal(){
+    function resetErrorModal() {
+        $(`.error-modal`).addClass("hide-error");
+    }
+
+    function showErrorModal() {
         $(`#errorModal`).modal();
     }
 
     function showPickerModal() {
-
-        $('#ingredientModal').modal()
-        hideLoader()
+        $("#ingredientModal").modal();
+        hideLoader();
     }
 
-    function showHelpModal(){
+    function showHelpModal() {
         $(`#helpModal`).modal();
     }
 
     function populatePickers(field, rowId, ingredient) {
-        $(`#ingredientMatch${field}`).removeClass("hide-picker")
+        $(`#ingredientMatch${field}`).removeClass("hide-picker");
         // <h4>Load New Ingredient</h4>
         // <p>Our API has suggested the following ingredient: '<span id="ingredientMatchAPIText">'</span></p>
         // <button type="button"  data-row-id="1" data-ingredient="" id="ingredientMatchAPIButton" class="btn btn-default pick-ingredient"  data-dismiss="modal">Pick</button>
         $(`#ingredientMatch${field}Text`).text(ingredient);
-        $(`#ingredientMatch${field}Button`).data("ingredient", ingredient).data("row-id", rowId);
+        $(`#ingredientMatch${field}Button`)
+            .data("ingredient", ingredient)
+            .data("row-id", rowId);
     }
-
 
     $("#getData").on("click", function (event) {
         event.preventDefault();
-        getIngredientData($("#ingredientInput").val())
-    })
+        getIngredientData($("#ingredientInput").val());
+    });
 
     $("#calcRecipe").on("click", function (event) {
         calcRecipe();
+    });
+    $("#hideHelp").on("click", (event) => {
+        localStorage.setItem("showHelp", false);
+    });
 
-    })
-    $("#hideHelp").on("click", event => {
-        localStorage.setItem("showHelp", false)
-    })
-
-    $("#help").on("click", event => {
+    $("#help").on("click", (event) => {
         showHelpModal();
-    })
+    });
 
-    $("#addRow").on("click", event => {
+    $("#addRow").on("click", (event) => {
         addRow();
-    })
-    $('[data-toggle="tooltip"]').tooltip()
-
-
-
-
-
+    });
+    $('[data-toggle="tooltip"]').tooltip();
 
     loadIngredients(initialLoad);
     showLanguage();
     const showHelp = localStorage.getItem("showHelp") || true;
-    if(showHelp !== "false"){
+    if (showHelp !== "false") {
         showHelpModal();
     }
-    
 
-
-
-    $('.pick-ingredient').on("click", function (event) {
-        const rowId = $(this).data("row-id")
-        const ingredient = $(this).data("ingredient")
-        $(`#row-${rowId}-ingredient`).val(ingredient)
+    $(".pick-ingredient").on("click", function (event) {
+        const rowId = $(this).data("row-id");
+        const ingredient = $(this).data("ingredient");
+        $(`#row-${rowId}-ingredient`).val(ingredient);
         enableAndPopulateRow(rowId, ingredient);
         $(`.picker`).addClass("hide-picker");
-        hideLoader()
-    })
-
-
+        hideLoader();
+    });
 
     // End Space for javascript
     // BOILERPLATE
