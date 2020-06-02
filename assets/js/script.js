@@ -6,8 +6,8 @@ $(document).ready(function () {
     let count = 0;
     const ingredients = {};
     let setLanguage = "english";
-    //const BASE_URL = "https://agile-shore-16925.herokuapp.com/"
-    const BASE_URL = "http://localhost:3000/";
+    const BASE_URL = "https://agile-shore-16925.herokuapp.com/"
+    // const BASE_URL = "http://localhost:3000/";
 
     const languages = {
         english: {
